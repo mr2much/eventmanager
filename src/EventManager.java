@@ -58,16 +58,17 @@ public class EventManager extends Application {
 	ObservableList<String> shifts = FXCollections.observableArrayList("07:00 AM - 03:59 PM", "04:00 PM - 11:59 PM",
 			"11:00 PM - 06:59 AM");
 
+	private Long id = 1L;
 	private final ObservableList<Evento> data = FXCollections.observableArrayList(
-			new Evento("11/11/2019", "335361543",
+			new Evento(id, "11/11/2019", "335361543",
 					"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)",
 					"07:00 AM - 04:00 PM", "Gerencia Soporte Sistemas Distribuidos.", false, Severidad.ALTA),
-			new Evento("30/10/2019", "335362015", "Inconvenientes con las consultas de firmas vía Siebel CRM",
+			new Evento(id++, "30/10/2019", "335362015", "Inconvenientes con las consultas de firmas vía Siebel CRM",
 					"11:00 PM - 07:00 AM", "DTEL Zona Metro Este", true, Severidad.BAJA),
-			new Evento("09/11/2019", "335361566",
+			new Evento(id++, "09/11/2019", "335361566",
 					"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)",
 					"07:00 AM - 04:00 PM", "Gerencia Soporte Sistemas Distribuidos.", false, Severidad.MEDIA),
-			new Evento("09/11/2019", "335361766",
+			new Evento(id++, "09/11/2019", "335361766",
 					"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)",
 					"07:00 AM - 04:00 PM", "Gerencia Soporte Sistemas Distribuidos.", true, Severidad.BAJA));
 
@@ -202,6 +203,8 @@ public class EventManager extends Application {
 								setStyle("-fx-background-color: yellow;");
 							}
 						}
+
+						Platform.runLater(() -> table.requestLayout());
 					}
 				};
 
@@ -217,14 +220,18 @@ public class EventManager extends Application {
 		// correspondiente al evento
 		table.setRowFactory(tv -> {
 			TableRow<Evento> row = new TableRow<>();
-
 			row.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
 				if (e.getButton() == MouseButton.SECONDARY) {
+//					row.getStyleClass().add("pending-event");
+					Platform.runLater(() -> table.requestLayout());
 					Evento evento = row.getTableView().getItems().get(row.getIndex());
 					boolean value = evento.getStatus();
 					evento.setStatus(!value);
+
 					row.getTableView().getItems().set(row.getIndex(), evento);
+
 				}
+
 			});
 
 			return row;

@@ -6,3 +6,15 @@
 	-fx-alignment: center-left;
 	-fx-text-alignment: justify;
 }
+
+.solved-event {
+	-fx-border-color: green;
+	-fx-border-style: solid;
+	-fx-border-width: 5.0px;
+}
+
+.pending-event {
+	-fx-border-color: yellow;
+	-fx-border-style: solid;
+	-fx-border-width: 5.0px;
+}

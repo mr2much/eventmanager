@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Evento {
+	private Long id;
 	private final SimpleStringProperty entryDate;
 	private final SimpleStringProperty ticketNumber;
 	private final SimpleStringProperty description;
@@ -12,9 +13,10 @@ public class Evento {
 	private final SimpleBooleanProperty status;
 	private Severidad severity;
 
-	public Evento(String entryDate, String ticketNumber, String description, String shift, String comentary,
+	public Evento(Long id, String entryDate, String ticketNumber, String description, String shift, String comentary,
 			boolean status, Severidad severity) {
 		super();
+		this.id = id;
 		this.entryDate = new SimpleStringProperty(entryDate);
 		this.ticketNumber = new SimpleStringProperty(ticketNumber);
 		this.description = new SimpleStringProperty(description);
@@ -26,6 +28,14 @@ public class Evento {
 
 	public Severidad getSeverity() {
 		return severity;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public void setSeverity(Severidad severity) {
