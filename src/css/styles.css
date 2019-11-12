@@ -1,0 +1,8 @@
+#event-table .column-header .label, #event-table .table-column, #event-table .table-cell, #event-table .table-cell {
+	-fx-alignment: center;
+}
+
+.label {
+	-fx-alignment: center-left;
+	-fx-text-alignment: justify;
+}
