@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import com.banreservas.monitoreo.Evento;
 import com.banreservas.monitoreo.Severidad;
+import com.banreservas.monitoreo.model.EventDialog;
+import com.banreservas.monitoreo.model.Evento;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -12,8 +13,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -93,6 +94,16 @@ public class EventManager extends Application {
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10, 10, 10, 10));
 
+		Button addBtn = new Button("Registrar Evento");
+
+		addBtn.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
+			if(e.getEventType() == MouseEvent.MOUSE_CLICKED) {
+				// open event creation dialog
+				EventDialog dlg = new EventDialog(stage);
+				dlg.show();
+			}
+		});
+
 		createTableView();
 
 		// set table width to be the same as the stage
@@ -104,7 +115,7 @@ public class EventManager extends Application {
 			}
 		});
 
-		vbox.getChildren().addAll(table);
+		vbox.getChildren().addAll(addBtn, table);
 		grid.add(vbox, 0, 0);
 
 		Scene scene = new Scene(grid, 1200, 500);
