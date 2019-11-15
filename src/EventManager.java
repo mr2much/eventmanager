@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -220,16 +221,20 @@ public class EventManager extends Application {
 		// correspondiente al evento
 		table.setRowFactory(tv -> {
 			TableRow<Evento> row = new TableRow<>();
+			if (!row.isEmpty()) {
+				System.out.println("Is not empty");
+			} else {
+				System.out.println("Not empty");
+			}
 			row.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
 				if (e.getButton() == MouseButton.SECONDARY) {
-//					row.getStyleClass().add("pending-event");
 					Platform.runLater(() -> table.requestLayout());
-					Evento evento = row.getTableView().getItems().get(row.getIndex());
+					Evento evento = row.getTableView().getSelectionModel().getSelectedItem();
+
 					boolean value = evento.getStatus();
 					evento.setStatus(!value);
 
 					row.getTableView().getItems().set(row.getIndex(), evento);
-
 				}
 
 			});
