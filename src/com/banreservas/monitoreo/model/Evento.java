@@ -1,7 +1,5 @@
 package com.banreservas.monitoreo.model;
 
-import com.banreservas.monitoreo.Severidad;
-
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 

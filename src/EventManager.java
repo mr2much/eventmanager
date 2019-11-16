@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import com.banreservas.monitoreo.Severidad;
 import com.banreservas.monitoreo.model.EventDialog;
 import com.banreservas.monitoreo.model.Evento;
+import com.banreservas.monitoreo.model.Severidad;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -97,7 +97,7 @@ public class EventManager extends Application {
 		Button addBtn = new Button("Registrar Evento");
 
 		addBtn.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
-			if(e.getEventType() == MouseEvent.MOUSE_CLICKED) {
+			if (e.getEventType() == MouseEvent.MOUSE_CLICKED) {
 				// open event creation dialog
 				EventDialog dlg = new EventDialog(stage);
 				dlg.show();
