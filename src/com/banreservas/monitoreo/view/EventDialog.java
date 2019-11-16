@@ -5,7 +5,6 @@ import com.banreservas.monitoreo.model.Severidad;
 import com.banreservas.monitoreo.model.Turnos;
 
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -16,22 +15,22 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 // Dialog class for event creation
 public class EventDialog extends Dialog<Evento> {
 	private GridPane grid;
-	private Button addBtn;
 
 	public EventDialog(Stage callerStage) {
 		super();
 
 		initOwner(callerStage);
 		setTitle("Registrar Nuevo Evento");
+		setResizable(true);
 
 		grid = new GridPane();
 
@@ -79,29 +78,15 @@ public class EventDialog extends Dialog<Evento> {
 
 		getDialogPane().getButtonTypes().addAll(addBtnType, cancelBtnType);
 
-		Button btnAdd = (Button) getDialogPane().lookupButton(addBtnType);
-
-		btnAdd.addEventFilter(ActionEvent.ACTION, (e) -> {
-			System.out.println("Accept pressed");
-
-			// when add is pressed it should create a new event and return it
-			setResultConverter(button -> {
-
-				if (ButtonData.OK_DONE == button.getButtonData()) {
-					System.out.println("It is Okay");
-
+		setResultConverter(new Callback<ButtonType, Evento>() {
+			@Override
+			public Evento call(ButtonType button) {
+				if (button == addBtnType) {
 					return new Evento.EventBuilder().description("Evento de Prueba").build();
 				}
-
+				
 				return null;
-			});
-		});
-
-		Button btnCancel = (Button) getDialogPane().lookupButton(cancelBtnType);
-
-		btnCancel.addEventFilter(ActionEvent.ACTION, (e) -> {
-			// when cancel is pressed, it should simply close the dialog
-			close();
+			}
 		});
 
 		getDialogPane().setContent(grid);
