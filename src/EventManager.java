@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.banreservas.monitoreo.model.EventDialog;
 import com.banreservas.monitoreo.model.Evento;
 import com.banreservas.monitoreo.model.Severidad;
+import com.banreservas.monitoreo.view.EventDialog;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -62,10 +62,10 @@ public class EventManager extends Application {
 			"11:00 PM - 06:59 AM");
 
 	private Long id = 1L;
-	private final ObservableList<Evento> data = FXCollections.observableArrayList(
-			new Evento(id, "11/11/2019", "335361543",
-					"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)",
-					"07:00 AM - 04:00 PM", "Gerencia Soporte Sistemas Distribuidos.", false, Severidad.ALTA),
+	private final ObservableList<Evento> data = FXCollections.observableArrayList(new Evento(id, "11/11/2019",
+			"335361543",
+			"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)",
+			"07:00 AM - 04:00 PM", "Gerencia Soporte Sistemas Distribuidos.", false, Severidad.ALTA),
 			new Evento(id++, "30/10/2019", "335362015", "Inconvenientes con las consultas de firmas vía Siebel CRM",
 					"11:00 PM - 07:00 AM", "DTEL Zona Metro Este", true, Severidad.BAJA),
 			new Evento(id++, "09/11/2019", "335361566",
@@ -101,13 +101,12 @@ public class EventManager extends Application {
 			if (e.getEventType() == MouseEvent.MOUSE_CLICKED) {
 				// open event creation dialog
 				EventDialog dlg = new EventDialog(stage);
-				Optional<Evento> evento = dlg.showAndWait();
+				Optional<Evento> optionalEvento = dlg.showAndWait();
 
-				if(evento != null) {
-					System.out.println("It has something: " + evento.getClass());
-				} else {
-					System.out.println("It doesn't have anything");
-				}
+				optionalEvento.ifPresent((Evento evento) -> {
+					System.out.println("Evento: " + evento.getDescription());
+				});
+
 			}
 		});
 

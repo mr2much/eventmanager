@@ -13,7 +13,19 @@ public class Evento {
 	private SimpleBooleanProperty status;
 	private Severidad severity;
 
-	public Evento() {};
+	public Evento() {
+		entryDate = new SimpleStringProperty();
+		ticketNumber = new SimpleStringProperty();
+		description = new SimpleStringProperty();
+		shift = new SimpleStringProperty();
+		comentary = new SimpleStringProperty();
+		status = new SimpleBooleanProperty();
+	};
+
+	private Evento(EventBuilder builder) {
+		this(builder.id, builder.entryDate, builder.ticketNumber, builder.description, builder.shift, builder.comentary,
+				builder.status, builder.severity);
+	}
 
 	public Evento(Long id, String entryDate, String ticketNumber, String description, String shift, String comentary,
 			boolean status, Severidad severity) {
@@ -24,8 +36,8 @@ public class Evento {
 		this.description = new SimpleStringProperty(description);
 		this.shift = new SimpleStringProperty(shift);
 		this.comentary = new SimpleStringProperty(comentary);
-		this.status = new SimpleBooleanProperty(status);
-		this.severity = severity;
+		setStatus(status);
+		setSeverity(severity);
 	}
 
 	public Severidad getSeverity() {
@@ -41,7 +53,8 @@ public class Evento {
 	}
 
 	public void setSeverity(Severidad severity) {
-		this.severity = severity;
+		// if severity is null default to Severidad.BAJA
+		this.severity = severity != null ? severity : Severidad.BAJA;
 	}
 
 	public String getComentary() {
@@ -89,6 +102,10 @@ public class Evento {
 	}
 
 	public void setStatus(boolean status) {
+		if(this.status == null) {
+			this.status = new SimpleBooleanProperty();
+		}
+		
 		this.status.set(status);
 	}
 
@@ -97,5 +114,71 @@ public class Evento {
 		return "Evento [entryDate=" + getEntryDate() + ", ticketNumber=" + getTicketNumber() + ", description="
 				+ getDescription() + ", shift=" + getShift() + ", comentary=" + getComentary() + ", status="
 				+ getStatus() + "]";
+	}
+
+	public static class EventBuilder {
+		private Long id;
+		private String entryDate;
+		private String ticketNumber;
+		private String description;
+		private String shift;
+		private String comentary;
+		private boolean status;
+		private Severidad severity;
+
+		public EventBuilder() {
+		}
+
+		public EventBuilder id(Long id) {
+			this.id = id;
+
+			return this;
+		}
+
+		public EventBuilder entryDate(String date) {
+			this.entryDate = date;
+
+			return this;
+		}
+
+		public EventBuilder ticketNumber(String ticket) {
+			this.ticketNumber = ticket;
+
+			return this;
+		}
+
+		public EventBuilder description(String description) {
+			this.description = description;
+
+			return this;
+		}
+
+		public EventBuilder shift(String shift) {
+			this.shift = shift;
+
+			return this;
+		}
+
+		public EventBuilder comentary(String comentary) {
+			this.comentary = comentary;
+
+			return this;
+		}
+
+		public EventBuilder status(boolean status) {
+			this.status = status;
+
+			return this;
+		}
+
+		public EventBuilder severity(Severidad severity) {
+			this.severity = severity;
+
+			return this;
+		}
+
+		public Evento build() {
+			return new Evento(this);
+		}
 	}
 }

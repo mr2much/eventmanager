@@ -1,4 +1,8 @@
-package com.banreservas.monitoreo.model;
+package com.banreservas.monitoreo.view;
+
+import com.banreservas.monitoreo.model.Evento;
+import com.banreservas.monitoreo.model.Severidad;
+import com.banreservas.monitoreo.model.Turnos;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -85,7 +89,8 @@ public class EventDialog extends Dialog<Evento> {
 
 				if (ButtonData.OK_DONE == button.getButtonData()) {
 					System.out.println("It is Okay");
-					return new Evento();
+
+					return new Evento.EventBuilder().description("Evento de Prueba").build();
 				}
 
 				return null;
