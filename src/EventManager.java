@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.banreservas.monitoreo.model.EventDialog;
 import com.banreservas.monitoreo.model.Evento;
@@ -100,7 +101,13 @@ public class EventManager extends Application {
 			if (e.getEventType() == MouseEvent.MOUSE_CLICKED) {
 				// open event creation dialog
 				EventDialog dlg = new EventDialog(stage);
-				dlg.show();
+				Optional<Evento> evento = dlg.showAndWait();
+
+				if(evento != null) {
+					System.out.println("It has something: " + evento.getClass());
+				} else {
+					System.out.println("It doesn't have anything");
+				}
 			}
 		});
 

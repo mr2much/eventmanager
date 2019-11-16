@@ -1,6 +1,7 @@
 package com.banreservas.monitoreo.model;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -11,6 +12,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -68,9 +70,35 @@ public class EventDialog extends Dialog<Evento> {
 
 		grid.add(vbox, 0, 0);
 
-		ButtonType closeBtn = new ButtonType("CANCEL", ButtonBar.ButtonData.CANCEL_CLOSE);
+		ButtonType addBtnType = new ButtonType("Agregar", ButtonBar.ButtonData.OK_DONE);
+		ButtonType cancelBtnType = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-		getDialogPane().getButtonTypes().addAll(closeBtn);
+		getDialogPane().getButtonTypes().addAll(addBtnType, cancelBtnType);
+
+		Button btnAdd = (Button) getDialogPane().lookupButton(addBtnType);
+
+		btnAdd.addEventFilter(ActionEvent.ACTION, (e) -> {
+			System.out.println("Accept pressed");
+
+			// when add is pressed it should create a new event and return it
+			setResultConverter(button -> {
+
+				if (ButtonData.OK_DONE == button.getButtonData()) {
+					System.out.println("It is Okay");
+					return new Evento();
+				}
+
+				return null;
+			});
+		});
+
+		Button btnCancel = (Button) getDialogPane().lookupButton(cancelBtnType);
+
+		btnCancel.addEventFilter(ActionEvent.ACTION, (e) -> {
+			// when cancel is pressed, it should simply close the dialog
+			close();
+		});
+
 		getDialogPane().setContent(grid);
 	}
 

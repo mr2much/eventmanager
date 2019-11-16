@@ -5,13 +5,15 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Evento {
 	private Long id;
-	private final SimpleStringProperty entryDate;
-	private final SimpleStringProperty ticketNumber;
-	private final SimpleStringProperty description;
-	private final SimpleStringProperty shift;
-	private final SimpleStringProperty comentary;
-	private final SimpleBooleanProperty status;
+	private SimpleStringProperty entryDate;
+	private SimpleStringProperty ticketNumber;
+	private SimpleStringProperty description;
+	private SimpleStringProperty shift;
+	private SimpleStringProperty comentary;
+	private SimpleBooleanProperty status;
 	private Severidad severity;
+
+	public Evento() {};
 
 	public Evento(Long id, String entryDate, String ticketNumber, String description, String shift, String comentary,
 			boolean status, Severidad severity) {
@@ -65,6 +67,7 @@ public class Evento {
 	public void setTicketNumber(String ticketNumber) {
 		this.ticketNumber.set(ticketNumber);
 	}
+
 	public String getTicketNumber() {
 		return ticketNumber.get();
 	}
