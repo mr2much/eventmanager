@@ -18,3 +18,15 @@
 	-fx-border-style: solid;
 	-fx-border-width: 5.0px;
 }
+
+.text-field:error, .text-area:error {
+	-fx-text-box-border: red;
+	-fx-focus-color: red;
+}
+
+#required-text {
+	-fx-fill: firebrick;
+	-fx-font-weight: bold;
+	-fx-font-size: 18px;
+	-fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.5), 0, 0, 0, 1);
+}
