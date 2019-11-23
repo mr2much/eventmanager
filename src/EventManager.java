@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.banreservas.monitoreo.model.Evento;
 import com.banreservas.monitoreo.model.Severidad;
+import com.banreservas.monitoreo.model.Turnos;
 import com.banreservas.monitoreo.view.EventDialog;
 
 import javafx.application.Application;
@@ -65,15 +66,15 @@ public class EventManager extends Application {
 	private final ObservableList<Evento> data = FXCollections.observableArrayList(new Evento(id, "11/11/2019",
 			"335361543",
 			"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)",
-			"07:00 AM - 04:00 PM", "Gerencia Soporte Sistemas Distribuidos.", false, Severidad.ALTA),
+			Turnos.MADRUGADA, "Gerencia Soporte Sistemas Distribuidos.", false, Severidad.ALTA),
 			new Evento(id++, "30/10/2019", "335362015", "Inconvenientes con las consultas de firmas vía Siebel CRM",
-					"11:00 PM - 07:00 AM", "DTEL Zona Metro Este", true, Severidad.BAJA),
+					Turnos.VESPERTINO, "DTEL Zona Metro Este", true, Severidad.BAJA),
 			new Evento(id++, "09/11/2019", "335361566",
 					"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)",
-					"07:00 AM - 04:00 PM", "Gerencia Soporte Sistemas Distribuidos.", false, Severidad.MEDIA),
+					Turnos.MATUTINO, "Gerencia Soporte Sistemas Distribuidos.", false, Severidad.MEDIA),
 			new Evento(id++, "09/11/2019", "335361766",
 					"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)",
-					"07:00 AM - 04:00 PM", "Gerencia Soporte Sistemas Distribuidos.", true, Severidad.BAJA));
+					Turnos.MATUTINO, "Gerencia Soporte Sistemas Distribuidos.", true, Severidad.BAJA));
 
 	public static void main(String[] args) {
 		launch(args);
@@ -104,7 +105,7 @@ public class EventManager extends Application {
 				Optional<Evento> optionalEvento = dlg.showAndWait();
 
 				optionalEvento.ifPresent((Evento evento) -> {
-					System.out.println("Evento: " + evento.getDescription());
+					System.out.println("Evento: " + evento.toString());
 				});
 
 			}
@@ -198,9 +199,9 @@ public class EventManager extends Application {
 		shiftColumn.setMinWidth(120);
 		shiftColumn.setCellValueFactory(new PropertyValueFactory<Evento, String>("shift"));
 		shiftColumn.setCellFactory(ComboBoxTableCell.forTableColumn(shifts));
-		shiftColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
-			t.getTableView().getItems().get(t.getTablePosition().getRow()).setShift(t.getNewValue());
-		});
+//		shiftColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
+//			t.getTableView().getItems().get(t.getTablePosition().getRow()).setShift(t.getNewValue());
+//		});
 
 		comentaryColumn.setMinWidth(220);
 		comentaryColumn.setCellValueFactory(new PropertyValueFactory<Evento, String>("comentary"));

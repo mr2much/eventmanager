@@ -1,27 +1,20 @@
 package com.banreservas.monitoreo.model;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 public class Evento {
 	private long id;
-	private SimpleStringProperty entryDate;
-	private SimpleStringProperty ticketNumber;
-	private SimpleStringProperty description;
-	private SimpleStringProperty shift;
-	private SimpleStringProperty comentary;
-	private SimpleBooleanProperty status;
-	private Severidad severity;;
+	private SimpleStringProperty entryDate = new SimpleStringProperty();
+	private SimpleStringProperty ticketNumber = new SimpleStringProperty();
+	private SimpleStringProperty description = new SimpleStringProperty();
+	private SimpleStringProperty comentary = new SimpleStringProperty();
+	private SimpleBooleanProperty status = new SimpleBooleanProperty();
+	private Turnos shift;
+	private Severidad severity;
 
 	public Evento() {
-		entryDate = new SimpleStringProperty();
-		ticketNumber = new SimpleStringProperty();
-		description = new SimpleStringProperty();
-		shift = new SimpleStringProperty();
-		comentary = new SimpleStringProperty();
-		status = new SimpleBooleanProperty();
+
 	}
 
 	private Evento(EventBuilder builder) {
@@ -29,14 +22,14 @@ public class Evento {
 				builder.status, builder.severity);
 	}
 
-	public Evento(long id, String entryDate, String ticketNumber, String description, String shift, String comentary,
+	public Evento(long id, String entryDate, String ticketNumber, String description, Turnos shift, String comentary,
 			boolean status, Severidad severity) {
 		super();
 		this.id = id;
 		this.entryDate = new SimpleStringProperty(entryDate);
 		this.ticketNumber = new SimpleStringProperty(ticketNumber);
 		this.description = new SimpleStringProperty(description);
-		this.shift = new SimpleStringProperty(shift);
+		this.shift = shift;
 		this.comentary = new SimpleStringProperty(comentary);
 		setStatus(status);
 		setSeverity(severity);
@@ -46,7 +39,7 @@ public class Evento {
 		return comentary.get();
 	}
 
-	public final StringProperty getComentaryProperty() {
+	public final SimpleStringProperty getComentaryProperty() {
 		return comentary;
 	}
 
@@ -54,7 +47,7 @@ public class Evento {
 		return description.get();
 	}
 
-	public final StringProperty getDescriptionProperty() {
+	public final SimpleStringProperty getDescriptionProperty() {
 		return description;
 	}
 
@@ -62,7 +55,7 @@ public class Evento {
 		return entryDate.get();
 	}
 
-	public final StringProperty getEntryDateProperty() {
+	public final SimpleStringProperty getEntryDateProperty() {
 		return entryDate;
 	}
 
@@ -74,11 +67,7 @@ public class Evento {
 		return severity;
 	}
 
-	public final String getShift() {
-		return shift.get();
-	}
-
-	public final StringProperty getShiftProperty() {
+	public final Turnos getShift() {
 		return shift;
 	}
 
@@ -86,7 +75,7 @@ public class Evento {
 		return status.get();
 	}
 
-	public final BooleanProperty getStatusProperty() {
+	public final SimpleBooleanProperty getStatusProperty() {
 		return status;
 	}
 
@@ -94,7 +83,7 @@ public class Evento {
 		return ticketNumber.get();
 	}
 
-	public final StringProperty getTicketNumberProperty() {
+	public final SimpleStringProperty getTicketNumberProperty() {
 		return ticketNumber;
 	}
 
@@ -119,8 +108,8 @@ public class Evento {
 		this.severity = severity != null ? severity : Severidad.BAJA;
 	}
 
-	public final void setShift(String shift) {
-		this.shift.set(shift);
+	public final void setShift(Turnos shift) {
+		this.shift = shift;
 	}
 
 	public final void setStatus(boolean status) {
@@ -132,22 +121,27 @@ public class Evento {
 	}
 
 	public final void setTicketNumber(String ticketNumber) {
+		if (this.ticketNumber == null) {
+			System.out.println("Setting ticketnumberproperty of " + this.ticketNumber);
+			this.ticketNumber = new SimpleStringProperty();
+		}
+
 		this.ticketNumber.set(ticketNumber);
 	}
 
 	@Override
 	public String toString() {
-		return "Evento [entryDate=" + getEntryDate() + ", ticketNumber=" + getTicketNumber() + ", description="
-				+ getDescription() + ", shift=" + getShift() + ", comentary=" + getComentary() + ", status="
-				+ getStatus() + "]";
+		return "Evento [id=" + id + ", entryDate=" + entryDate.get() + ", ticketNumber=" + ticketNumber.get()
+				+ ", description=" + description.get() + ", shift=" + shift + ", comentary=" + comentary.get()
+				+ ", status=" + status.get() + ", severity=" + severity + "]";
 	}
 
 	public static class EventBuilder {
-		private Long id;
+		private long id;
 		private String entryDate;
 		private String ticketNumber;
 		private String description;
-		private String shift;
+		private Turnos shift;
 		private String comentary;
 		private boolean status;
 		private Severidad severity;
@@ -189,7 +183,7 @@ public class Evento {
 			return this;
 		}
 
-		public EventBuilder shift(String shift) {
+		public EventBuilder shift(Turnos shift) {
 			this.shift = shift;
 
 			return this;

@@ -62,13 +62,13 @@ public class EventDialog extends Dialog<Evento> {
 
 		tfEventDate.setPromptText("Fecha del Evento: DD/MM/AAAA");
 		tfEventDate.setMinWidth(200);
-
+		
 		setTextFieldValidation(tfEventDate, tfEventTicket, taEventDescription, taEventComentary);
 
 		tfEventTicket.setPromptText("Numero de Ticket");
 
 		Label lblEventSeverity = new Label("Indique Severidad de Evento");
-		ComboBox<String> cmbSeverity = new ComboBox(FXCollections.observableArrayList(Severidad.values()));
+		ComboBox<Severidad> cmbSeverity = new ComboBox(FXCollections.observableArrayList(Severidad.values()));
 		cmbSeverity.getSelectionModel().selectLast();
 
 		vbox.getChildren().addAll(tfEventDate, tfEventTicket);
@@ -78,7 +78,7 @@ public class EventDialog extends Dialog<Evento> {
 		taEventDescription.setPrefRowCount(5);
 
 		Label lblTurno = new Label("Especifique el Turno");
-		ComboBox<String> cmbTurnos = new ComboBox(FXCollections.observableArrayList(Turnos.values()));
+		ComboBox<Turnos> cmbTurnos = new ComboBox(FXCollections.observableArrayList(Turnos.values()));
 		cmbTurnos.getSelectionModel().selectFirst();
 
 		Label lblComentary = new Label("Agregar Comentario");
@@ -101,7 +101,17 @@ public class EventDialog extends Dialog<Evento> {
 			@Override
 			public Evento call(ButtonType button) {
 				if (button == addBtnType) {
-					return new Evento.EventBuilder().description("Evento de Prueba").build();
+					Evento newEvent = new Evento.EventBuilder().build();
+				
+					newEvent.getEntryDateProperty().bind(tfEventDate.textProperty());
+					newEvent.getTicketNumberProperty().bind(tfEventTicket.textProperty());
+					newEvent.setSeverity(cmbSeverity.getValue());
+					newEvent.getDescriptionProperty().bind(taEventDescription.textProperty());
+					newEvent.setShift(cmbTurnos.getValue());
+					newEvent.getComentaryProperty().bind(taEventComentary.textProperty());
+					newEvent.setStatus(false);
+					
+					return newEvent;
 				}
 
 				return null;
