@@ -2,9 +2,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.banreservas.monitoreo.controller.EventTableViewController;
 import com.banreservas.monitoreo.model.Evento;
 import com.banreservas.monitoreo.model.Severidad;
 import com.banreservas.monitoreo.model.Turnos;
+import com.banreservas.monitoreo.repository.EventRepository;
+import com.banreservas.monitoreo.repository.EventRepositoryStub;
 import com.banreservas.monitoreo.view.EventDialog;
 
 import javafx.application.Application;
@@ -37,6 +40,8 @@ import javafx.util.Callback;
 
 public class EventManager extends Application {
 
+	private EventTableViewController controller = new EventTableViewController();
+	private EventRepository repository = new EventRepositoryStub();
 	TableColumn<Evento, String> entryDateColumn = new TableColumn<>("Fecha");
 	TableColumn<Evento, String> ticketNumberColumn = new TableColumn<>("Ticket");
 	TableColumn<Evento, String> descriptionColumn = new TableColumn<>("Reporte de Evento");
@@ -82,6 +87,8 @@ public class EventManager extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		controller.setEventRepository(repository);
+		
 		stage.setTitle("Eventos Cambio de Turno - Centro de Monitoreo");
 
 		GridPane grid = new GridPane();
@@ -233,7 +240,7 @@ public class EventManager extends Application {
 
 		statusColumn.setCellFactory(cellFactory);
 
-		table.setItems(data);
+		table.setItems(controller.data());
 
 		// Estatus del evento cambia cuando se hace right click en el row
 		// correspondiente al evento
