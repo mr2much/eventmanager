@@ -62,7 +62,7 @@ public class EventDialog extends Dialog<Evento> {
 
 		tfEventDate.setPromptText("Fecha del Evento: DD/MM/AAAA");
 		tfEventDate.setMinWidth(200);
-		
+
 		setTextFieldValidation(tfEventDate, tfEventTicket, taEventDescription, taEventComentary);
 
 		tfEventTicket.setPromptText("Numero de Ticket");
@@ -102,15 +102,15 @@ public class EventDialog extends Dialog<Evento> {
 			public Evento call(ButtonType button) {
 				if (button == addBtnType) {
 					Evento newEvent = new Evento.EventBuilder().build();
-				
-					newEvent.getEntryDateProperty().bind(tfEventDate.textProperty());
-					newEvent.getTicketNumberProperty().bind(tfEventTicket.textProperty());
+
+					newEvent.setEntryDate(tfEventDate.getText());
+					newEvent.setTicketNumber(tfEventTicket.getText());
 					newEvent.setSeverity(cmbSeverity.getValue());
-					newEvent.getDescriptionProperty().bind(taEventDescription.textProperty());
+					newEvent.setDescription(taEventDescription.getText());
 					newEvent.setShift(cmbTurnos.getValue());
-					newEvent.getComentaryProperty().bind(taEventComentary.textProperty());
+					newEvent.setComentary(taEventComentary.getText());
 					newEvent.setStatus(false);
-					
+
 					return newEvent;
 				}
 
@@ -125,9 +125,9 @@ public class EventDialog extends Dialog<Evento> {
 		hbText.getChildren().add(requiredText);
 
 		grid.add(hbText, 0, 1);
-		
+
 		hbText.visibleProperty().bind(booleanBinding);
-		
+
 		getDialogPane().setContent(grid);
 	}
 

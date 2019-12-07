@@ -45,7 +45,7 @@ public class EventManager extends Application {
 	TableColumn<Evento, String> entryDateColumn = new TableColumn<>("Fecha");
 	TableColumn<Evento, String> ticketNumberColumn = new TableColumn<>("Ticket");
 	TableColumn<Evento, String> descriptionColumn = new TableColumn<>("Reporte de Evento");
-	TableColumn<Evento, String> shiftColumn = new TableColumn<>("Turno");
+	TableColumn<Evento, Turnos> shiftColumn = new TableColumn<>("Turno");
 	TableColumn<Evento, String> comentaryColumn = new TableColumn<>("Comentarios");
 	TableColumn<Evento, Boolean> statusColumn = new TableColumn<>("Estatus");
 
@@ -64,8 +64,7 @@ public class EventManager extends Application {
 
 	private TableView<Evento> table = new TableView<>();
 
-	ObservableList<String> shifts = FXCollections.observableArrayList("07:00 AM - 03:59 PM", "04:00 PM - 11:59 PM",
-			"11:00 PM - 06:59 AM");
+	ObservableList<Turnos> shifts = FXCollections.observableArrayList(Turnos.values());
 
 	private Long id = 1L;
 	private final ObservableList<Evento> data = FXCollections.observableArrayList(new Evento(id, "11/11/2019",
@@ -88,7 +87,7 @@ public class EventManager extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		controller.setEventRepository(repository);
-		
+
 		stage.setTitle("Eventos Cambio de Turno - Centro de Monitoreo");
 
 		GridPane grid = new GridPane();
@@ -113,6 +112,7 @@ public class EventManager extends Application {
 
 				optionalEvento.ifPresent((Evento evento) -> {
 					System.out.println("Evento: " + evento.toString());
+					controller.add(evento);
 				});
 
 			}
@@ -204,7 +204,7 @@ public class EventManager extends Application {
 		descriptionColumn.setCellFactory(textAreaCell);
 
 		shiftColumn.setMinWidth(120);
-		shiftColumn.setCellValueFactory(new PropertyValueFactory<Evento, String>("shift"));
+		shiftColumn.setCellValueFactory(new PropertyValueFactory<Evento, Turnos>("shift"));
 		shiftColumn.setCellFactory(ComboBoxTableCell.forTableColumn(shifts));
 //		shiftColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
 //			t.getTableView().getItems().get(t.getTablePosition().getRow()).setShift(t.getNewValue());
