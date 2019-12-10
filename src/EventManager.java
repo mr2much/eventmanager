@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.event.ChangeEvent;
-
 import com.banreservas.monitoreo.controller.EventTableViewController;
 import com.banreservas.monitoreo.model.Evento;
 import com.banreservas.monitoreo.model.Turnos;
@@ -27,6 +25,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -137,7 +136,6 @@ public class EventManager extends Application {
 		entryDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		entryDateColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
 			t.getTableView().getItems().get(t.getTablePosition().getRow()).setEntryDate(t.getNewValue());
-			System.out.println(t.getTableView().getItems().get(t.getTablePosition().getRow()).toString());
 		});
 
 		ticketNumberColumn.setMinWidth(60);
@@ -178,6 +176,34 @@ public class EventManager extends Application {
 							});
 
 							super.setGraphic(box);
+
+							l.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+								@Override
+								public void handle(MouseEvent e) {
+									if (e.getClickCount() == 2) {
+										TextArea ta = new TextArea();
+										ta.setWrapText(true);
+										ta.setText(l.getText());
+										l.setGraphic(ta);
+										l.setText("");
+										ta.requestFocus();
+
+										ta.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+											@Override
+											public void handle(KeyEvent e) {
+												if (e.getCode() == KeyCode.ENTER) {
+													l.setGraphic(null);
+													l.setText(ta.getText());
+												}
+											}
+
+										});
+									}
+								}
+
+							});
 						}
 					}
 				};
