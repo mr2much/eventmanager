@@ -153,6 +153,9 @@ public class EventManager extends Application {
 			@Override
 			public TableCell<Evento, String> call(TableColumn<Evento, String> cellValue) {
 				TableCell<Evento, String> cell = new TableCell<Evento, String>() {
+
+					String backup = "";
+
 					@Override
 					public void updateItem(String item, boolean empty) {
 						if (item == getItem()) {
@@ -180,14 +183,13 @@ public class EventManager extends Application {
 
 							TextArea ta = new TextArea();
 							ta.setWrapText(true);
-							final String backup = l.getText();
 
 							l.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 								@Override
 								public void handle(MouseEvent e) {
 									if (e.getClickCount() == 2) {
-										ta.setText(l.getText());
+										ta.setText(backup = l.getText());
 										l.setGraphic(ta);
 										l.setText("");
 										ta.requestFocus();
