@@ -2,9 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.event.ChangeEvent;
+
 import com.banreservas.monitoreo.controller.EventTableViewController;
 import com.banreservas.monitoreo.model.Evento;
-import com.banreservas.monitoreo.model.Severidad;
 import com.banreservas.monitoreo.model.Turnos;
 import com.banreservas.monitoreo.repository.EventRepository;
 import com.banreservas.monitoreo.repository.EventRepositoryStub;
@@ -13,6 +14,7 @@ import com.banreservas.monitoreo.view.EventDialog;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -45,7 +47,7 @@ public class EventManager extends Application {
 	TableColumn<Evento, String> entryDateColumn = new TableColumn<>("Fecha");
 	TableColumn<Evento, String> ticketNumberColumn = new TableColumn<>("Ticket");
 	TableColumn<Evento, String> descriptionColumn = new TableColumn<>("Reporte de Evento");
-	TableColumn<Evento, String> shiftColumn = new TableColumn<>("Turno");
+	TableColumn<Evento, Turnos> shiftColumn = new TableColumn<>("Turno");
 	TableColumn<Evento, String> comentaryColumn = new TableColumn<>("Comentarios");
 	TableColumn<Evento, Boolean> statusColumn = new TableColumn<>("Estatus");
 
@@ -64,22 +66,7 @@ public class EventManager extends Application {
 
 	private TableView<Evento> table = new TableView<>();
 
-	ObservableList<String> shifts = FXCollections.observableArrayList("07:00 AM - 03:59 PM", "04:00 PM - 11:59 PM",
-			"11:00 PM - 06:59 AM");
-
-	private Long id = 1L;
-	private final ObservableList<Evento> data = FXCollections.observableArrayList(new Evento(id, "11/11/2019",
-			"335361543",
-			"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)",
-			Turnos.MADRUGADA, "Gerencia Soporte Sistemas Distribuidos.", false, Severidad.ALTA),
-			new Evento(id++, "30/10/2019", "335362015", "Inconvenientes con las consultas de firmas vía Siebel CRM",
-					Turnos.VESPERTINO, "DTEL Zona Metro Este", true, Severidad.BAJA),
-			new Evento(id++, "09/11/2019", "335361566",
-					"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)",
-					Turnos.MATUTINO, "Gerencia Soporte Sistemas Distribuidos.", false, Severidad.MEDIA),
-			new Evento(id++, "09/11/2019", "335361766",
-					"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)",
-					Turnos.MATUTINO, "Gerencia Soporte Sistemas Distribuidos.", true, Severidad.BAJA));
+	ObservableList<Turnos> shifts = FXCollections.observableArrayList(Turnos.values());
 
 	public static void main(String[] args) {
 		launch(args);
@@ -88,7 +75,7 @@ public class EventManager extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		controller.setEventRepository(repository);
-		
+
 		stage.setTitle("Eventos Cambio de Turno - Centro de Monitoreo");
 
 		GridPane grid = new GridPane();
@@ -113,6 +100,7 @@ public class EventManager extends Application {
 
 				optionalEvento.ifPresent((Evento evento) -> {
 					System.out.println("Evento: " + evento.toString());
+					controller.add(evento);
 				});
 
 			}
@@ -149,6 +137,7 @@ public class EventManager extends Application {
 		entryDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		entryDateColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
 			t.getTableView().getItems().get(t.getTablePosition().getRow()).setEntryDate(t.getNewValue());
+			System.out.println(t.getTableView().getItems().get(t.getTablePosition().getRow()).toString());
 		});
 
 		ticketNumberColumn.setMinWidth(60);
@@ -204,11 +193,8 @@ public class EventManager extends Application {
 		descriptionColumn.setCellFactory(textAreaCell);
 
 		shiftColumn.setMinWidth(120);
-		shiftColumn.setCellValueFactory(new PropertyValueFactory<Evento, String>("shift"));
+		shiftColumn.setCellValueFactory(new PropertyValueFactory<Evento, Turnos>("shift"));
 		shiftColumn.setCellFactory(ComboBoxTableCell.forTableColumn(shifts));
-//		shiftColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
-//			t.getTableView().getItems().get(t.getTablePosition().getRow()).setShift(t.getNewValue());
-//		});
 
 		comentaryColumn.setMinWidth(220);
 		comentaryColumn.setCellValueFactory(new PropertyValueFactory<Evento, String>("comentary"));
@@ -265,6 +251,29 @@ public class EventManager extends Application {
 			});
 
 			return row;
+		});
+
+		controller.addListener(new ListChangeListener<Evento>() {
+
+			@Override
+			public void onChanged(javafx.collections.ListChangeListener.Change<? extends Evento> event) {
+				if (event.next()) {
+					if (event.wasUpdated()) {
+						System.out.println("Evento cambio: " + event.toString());
+					}
+				}
+
+			}
+
+		});
+
+		table.getItems().addListener(new ListChangeListener<Evento>() {
+
+			@Override
+			public void onChanged(javafx.collections.ListChangeListener.Change<? extends Evento> event) {
+				System.out.println("Evento cambio: " + event.toString());
+			}
+
 		});
 
 		table.getColumns().addAll(columnas);
