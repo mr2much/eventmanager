@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.event.ChangeEvent;
-
 import com.banreservas.monitoreo.controller.EventTableViewController;
 import com.banreservas.monitoreo.model.Evento;
 import com.banreservas.monitoreo.model.Turnos;
@@ -27,6 +25,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -111,11 +110,12 @@ public class EventManager extends Application {
 		// set table width to be the same as the stage
 		table.prefWidthProperty().bind(stage.widthProperty());
 
-		stage.addEventHandler(KeyEvent.KEY_RELEASED, (EventHandler<KeyEvent>) e -> {
-			if (e.getCode() == KeyCode.ESCAPE) {
-				stage.close();
-			}
-		});
+		// stage.addEventHandler(KeyEvent.KEY_RELEASED, (EventHandler<KeyEvent>)
+		// e -> {
+		// if (e.getCode() == KeyCode.ESCAPE) {
+		// stage.close();
+		// }
+		// });
 
 		vbox.getChildren().addAll(addBtn, table);
 		grid.add(vbox, 0, 0);
@@ -137,7 +137,6 @@ public class EventManager extends Application {
 		entryDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		entryDateColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
 			t.getTableView().getItems().get(t.getTablePosition().getRow()).setEntryDate(t.getNewValue());
-			System.out.println(t.getTableView().getItems().get(t.getTablePosition().getRow()).toString());
 		});
 
 		ticketNumberColumn.setMinWidth(60);
@@ -154,6 +153,9 @@ public class EventManager extends Application {
 			@Override
 			public TableCell<Evento, String> call(TableColumn<Evento, String> cellValue) {
 				TableCell<Evento, String> cell = new TableCell<Evento, String>() {
+
+					String backup = "";
+
 					@Override
 					public void updateItem(String item, boolean empty) {
 						if (item == getItem()) {
@@ -178,6 +180,49 @@ public class EventManager extends Application {
 							});
 
 							super.setGraphic(box);
+
+							TextArea ta = new TextArea();
+							ta.setWrapText(true);
+
+							l.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+								@Override
+								public void handle(MouseEvent e) {
+									if (e.getClickCount() == 2) {
+										ta.setText(backup = l.getText());
+										l.setGraphic(ta);
+										l.setText("");
+										ta.requestFocus();
+									}
+								}
+
+							});
+
+							ta.focusedProperty().addListener((prop, oldValue, newValue) -> {
+								if (!newValue) {
+									l.setGraphic(null);
+									l.setText(backup);
+								}
+							});
+
+							ta.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+								@Override
+								public void handle(KeyEvent e) {
+									if (e.getCode() == KeyCode.ENTER) {
+										l.setGraphic(null);
+										l.setText(ta.getText());
+										System.out.println("ENTER Pressed");
+									} else if (e.getCode() == KeyCode.ESCAPE) {
+										System.out.println("ESC Pressed");
+										System.out.println(backup);
+										ta.setText(backup);
+										l.setGraphic(null);
+										l.setText(ta.getText());
+									}
+								}
+
+							});
 						}
 					}
 				};
