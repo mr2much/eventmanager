@@ -1,3 +1,4 @@
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -121,7 +122,9 @@ public class EventManager extends Application {
 		grid.add(vbox, 0, 0);
 
 		Scene scene = new Scene(grid, 1200, 500);
-		scene.getStylesheets().add(EventManager.class.getResource("css/styles.css").toExternalForm());
+//		scene.getStylesheets().add(Paths.get("res", "css", "styles.css").toAbsolutePath().toString());
+		 scene.getStylesheets().add(EventManager.class.getResource("css/styles.css").toExternalForm());
+		System.out.println(System.getProperty("user.dir"));
 		stage.setScene(scene);
 		stage.show();
 	}
