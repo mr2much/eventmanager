@@ -122,9 +122,8 @@ public class EventManager extends Application {
 		grid.add(vbox, 0, 0);
 
 		Scene scene = new Scene(grid, 1200, 500);
-//		scene.getStylesheets().add(Paths.get("res", "css", "styles.css").toAbsolutePath().toString());
-		 scene.getStylesheets().add(EventManager.class.getResource("css/styles.css").toExternalForm());
-		System.out.println(System.getProperty("user.dir"));
+
+		scene.getStylesheets().add(EventManager.class.getResource("css/styles.css").toExternalForm());
 		stage.setScene(scene);
 		stage.show();
 	}
@@ -150,8 +149,12 @@ public class EventManager extends Application {
 		});
 
 		descriptionColumn.setMinWidth(300);
+		descriptionColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
+			t.getTableView().getItems().get(t.getTablePosition().getRow()).setDescription(t.getNewValue());
+			System.out.println("F this: " + t.getNewValue());
+		});
 
-		Callback<TableColumn<Evento, String>, TableCell<Evento, String>> textAreaCell = new Callback<TableColumn<Evento, String>, TableCell<Evento, String>>() {
+		Callback<TableColumn<Evento, String>, TableCell<Evento, String>> textAreaCellFactory = new Callback<TableColumn<Evento, String>, TableCell<Evento, String>>() {
 
 			@Override
 			public TableCell<Evento, String> call(TableColumn<Evento, String> cellValue) {
@@ -201,24 +204,17 @@ public class EventManager extends Application {
 
 							});
 
-							ta.focusedProperty().addListener((prop, oldValue, newValue) -> {
-								if (!newValue) {
-									l.setGraphic(null);
-									l.setText(backup);
-								}
-							});
-
-							ta.setOnKeyReleased(new EventHandler<KeyEvent>() {
+							ta.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 								@Override
 								public void handle(KeyEvent e) {
 									if (e.getCode() == KeyCode.ENTER) {
 										l.setGraphic(null);
 										l.setText(ta.getText());
-										System.out.println("ENTER Pressed");
+										ta.requestFocus();
+										getTableView().getItems().get(getTableRow().getIndex())
+												.setDescription(ta.getText());
 									} else if (e.getCode() == KeyCode.ESCAPE) {
-										System.out.println("ESC Pressed");
-										System.out.println(backup);
 										ta.setText(backup);
 										l.setGraphic(null);
 										l.setText(ta.getText());
@@ -226,27 +222,41 @@ public class EventManager extends Application {
 								}
 
 							});
+
+							ta.focusedProperty().addListener((prop, oldValue, newValue) -> {
+								if (!newValue) {
+									l.setGraphic(null);
+									l.setText(ta.getText());
+								}
+							});
+
 						}
 					}
 				};
 
 				Platform.runLater(() -> table.requestLayout());
-				cell.setWrapText(true);
+				// cell.setWrapText(true);
 
 				return cell;
 			}
 		};
 
 		descriptionColumn.setCellValueFactory(new PropertyValueFactory<Evento, String>("description"));
-		descriptionColumn.setCellFactory(textAreaCell);
+		descriptionColumn.setCellFactory(textAreaCellFactory);
 
 		shiftColumn.setMinWidth(120);
 		shiftColumn.setCellValueFactory(new PropertyValueFactory<Evento, Turnos>("shift"));
 		shiftColumn.setCellFactory(ComboBoxTableCell.forTableColumn(shifts));
+		shiftColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, Turnos>>) t -> {
+			t.getTableView().getItems().get(t.getTablePosition().getRow()).setShift(t.getNewValue());
+		});
 
 		comentaryColumn.setMinWidth(220);
 		comentaryColumn.setCellValueFactory(new PropertyValueFactory<Evento, String>("comentary"));
 		comentaryColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+		comentaryColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento,String>>) t -> {
+			t.getTableView().getItems().get(t.getTablePosition().getRow()).setComentary(t.getNewValue());;
+		});
 
 		statusColumn.setMinWidth(40);
 		statusColumn.setCellValueFactory(new PropertyValueFactory<Evento, Boolean>("status"));
