@@ -1,5 +1,8 @@
 package com.banreservas.monitoreo.view;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import com.banreservas.monitoreo.model.Evento;
 import com.banreservas.monitoreo.model.Severidad;
 import com.banreservas.monitoreo.model.Turnos;
@@ -15,6 +18,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -27,17 +31,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 // Dialog class for event creation
 public class EventDialog extends Dialog<Evento> {
 	private GridPane grid;
+	DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	final private DatePicker datePicker = new DatePicker(LocalDate.now());
 	final private TextField tfEventDate = new TextField();
 	final private TextField tfEventTicket = new TextField();
 	private TextArea taEventDescription = new TextArea();
 	private TextArea taEventComentary = new TextArea();
 
-	BooleanBinding booleanBinding = Bindings.isEmpty(tfEventDate.textProperty())
-			.or(Bindings.isEmpty(tfEventTicket.textProperty())).or(Bindings.isEmpty(taEventDescription.textProperty()))
+	BooleanBinding booleanBinding = Bindings.isEmpty(tfEventTicket.textProperty())
+			.or(Bindings.isEmpty(taEventDescription.textProperty()))
 			.or(Bindings.isEmpty(taEventComentary.textProperty()));
 
 	public EventDialog(Stage callerStage) {
@@ -63,7 +70,7 @@ public class EventDialog extends Dialog<Evento> {
 		tfEventDate.setPromptText("Fecha del Evento: DD/MM/AAAA");
 		tfEventDate.setMinWidth(200);
 
-		setTextFieldValidation(tfEventDate, tfEventTicket, taEventDescription, taEventComentary);
+		setTextFieldValidation(tfEventTicket, taEventDescription, taEventComentary);
 
 		tfEventTicket.setPromptText("Numero de Ticket");
 
@@ -71,7 +78,29 @@ public class EventDialog extends Dialog<Evento> {
 		ComboBox<Severidad> cmbSeverity = new ComboBox(FXCollections.observableArrayList(Severidad.values()));
 		cmbSeverity.getSelectionModel().selectLast();
 
-		vbox.getChildren().addAll(tfEventDate, tfEventTicket);
+		datePicker.setConverter(new StringConverter<LocalDate>() {
+
+			@Override
+			public String toString(LocalDate date) {
+				if (date == null) {
+					return LocalDate.now().toString();
+				}
+
+				return format.format(date);
+			}
+
+			@Override
+			public LocalDate fromString(String dateString) {
+				if (dateString == null || dateString.trim().isEmpty()) {
+					return null;
+				}
+
+				return LocalDate.parse(dateString, format);
+			}
+		});
+
+		vbox.getChildren().addAll(datePicker, tfEventTicket);
+		// vbox.getChildren().addAll(tfEventDate, tfEventTicket);
 
 		Label lblEventDescription = new Label("Descripcion del Evento");
 		taEventDescription.setWrapText(true);
@@ -103,7 +132,7 @@ public class EventDialog extends Dialog<Evento> {
 				if (button == addBtnType) {
 					Evento newEvent = new Evento.EventBuilder().build();
 
-					newEvent.setEntryDate(tfEventDate.getText());
+					newEvent.setEntryDate(datePicker.getValue());
 					newEvent.setTicketNumber(tfEventTicket.getText());
 					newEvent.setSeverity(cmbSeverity.getValue());
 					newEvent.setDescription(taEventDescription.getText());

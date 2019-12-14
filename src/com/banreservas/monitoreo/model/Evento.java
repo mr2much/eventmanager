@@ -1,5 +1,7 @@
 package com.banreservas.monitoreo.model;
 
+import java.time.LocalDate;
+
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -200,5 +202,10 @@ public class Evento {
 
 			return this;
 		}
+	}
+
+	public void setEntryDate(LocalDate value) {
+		// TODO Auto-generated method stub
+
 	}
 }
