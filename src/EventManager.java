@@ -136,7 +136,7 @@ public class EventManager extends Application {
 
 		entryDateColumn.setMinWidth(60);
 		entryDateColumn.setCellValueFactory(new PropertyValueFactory<Evento, LocalDate>("entryDate"));
-		//		entryDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+		// entryDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		entryDateColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, LocalDate>>) t -> {
 			t.getTableView().getItems().get(t.getTablePosition().getRow()).setEntryDate(t.getNewValue());
 		});
@@ -254,8 +254,9 @@ public class EventManager extends Application {
 		comentaryColumn.setMinWidth(220);
 		comentaryColumn.setCellValueFactory(new PropertyValueFactory<Evento, String>("comentary"));
 		comentaryColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-		comentaryColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento,String>>) t -> {
-			t.getTableView().getItems().get(t.getTablePosition().getRow()).setComentary(t.getNewValue());;
+		comentaryColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
+			t.getTableView().getItems().get(t.getTablePosition().getRow()).setComentary(t.getNewValue());
+			;
 		});
 
 		statusColumn.setMinWidth(40);

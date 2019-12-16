@@ -1,12 +1,15 @@
 package com.banreservas.monitoreo.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Evento {
+
+	private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private long id;
 	private SimpleObjectProperty<LocalDate> entryDate = new SimpleObjectProperty<>();
 	// private SimpleStringProperty entryDate = new SimpleStringProperty();
@@ -56,8 +59,8 @@ public class Evento {
 		return description;
 	}
 
-	public final LocalDate getEntryDate() {
-		return entryDate.get();
+	public final String getEntryDate() {
+		return dateFormat.format(entryDate.get());
 	}
 
 	public final SimpleObjectProperty<LocalDate> getEntryDateProperty() {
