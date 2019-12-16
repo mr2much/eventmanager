@@ -1,4 +1,4 @@
-import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +44,7 @@ public class EventManager extends Application {
 
 	private EventTableViewController controller = new EventTableViewController();
 	private EventRepository repository = new EventRepositoryStub();
-	TableColumn<Evento, String> entryDateColumn = new TableColumn<>("Fecha");
+	TableColumn<Evento, LocalDate> entryDateColumn = new TableColumn<>("Fecha");
 	TableColumn<Evento, String> ticketNumberColumn = new TableColumn<>("Ticket");
 	TableColumn<Evento, String> descriptionColumn = new TableColumn<>("Reporte de Evento");
 	TableColumn<Evento, Turnos> shiftColumn = new TableColumn<>("Turno");
@@ -135,9 +135,9 @@ public class EventManager extends Application {
 		// table.setFixedCellSize(60.0);
 
 		entryDateColumn.setMinWidth(60);
-		entryDateColumn.setCellValueFactory(new PropertyValueFactory<Evento, String>("entryDate"));
-		entryDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-		entryDateColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
+		entryDateColumn.setCellValueFactory(new PropertyValueFactory<Evento, LocalDate>("entryDate"));
+		//		entryDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+		entryDateColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, LocalDate>>) t -> {
 			t.getTableView().getItems().get(t.getTablePosition().getRow()).setEntryDate(t.getNewValue());
 		});
 

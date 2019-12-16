@@ -3,11 +3,13 @@ package com.banreservas.monitoreo.model;
 import java.time.LocalDate;
 
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Evento {
 	private long id;
-	private SimpleStringProperty entryDate = new SimpleStringProperty();
+	private SimpleObjectProperty<LocalDate> entryDate = new SimpleObjectProperty<>();
+	// private SimpleStringProperty entryDate = new SimpleStringProperty();
 	private SimpleStringProperty ticketNumber = new SimpleStringProperty();
 	private SimpleStringProperty description = new SimpleStringProperty();
 	private SimpleStringProperty comentary = new SimpleStringProperty();
@@ -24,11 +26,12 @@ public class Evento {
 				builder.status, builder.severity);
 	}
 
-	public Evento(long id, String entryDate, String ticketNumber, String description, Turnos shift, String comentary,
+	public Evento(long id, LocalDate entryDate, String ticketNumber, String description, Turnos shift, String comentary,
 			boolean status, Severidad severity) {
 		super();
 		this.id = id;
-		this.entryDate = new SimpleStringProperty(entryDate);
+		this.entryDate = new SimpleObjectProperty<>(entryDate);
+		// this.entryDate = new SimpleStringProperty(entryDate);
 		this.ticketNumber = new SimpleStringProperty(ticketNumber);
 		this.description = new SimpleStringProperty(description);
 		this.shift = shift;
@@ -53,11 +56,11 @@ public class Evento {
 		return description;
 	}
 
-	public final String getEntryDate() {
+	public final LocalDate getEntryDate() {
 		return entryDate.get();
 	}
 
-	public final SimpleStringProperty getEntryDateProperty() {
+	public final SimpleObjectProperty<LocalDate> getEntryDateProperty() {
 		return entryDate;
 	}
 
@@ -97,7 +100,7 @@ public class Evento {
 		this.description.set(description);
 	}
 
-	public final void setEntryDate(String entryDate) {
+	public final void setEntryDate(LocalDate entryDate) {
 		this.entryDate.set(entryDate);
 	}
 
@@ -140,7 +143,7 @@ public class Evento {
 
 	public static class EventBuilder {
 		private long id;
-		private String entryDate;
+		private LocalDate entryDate;
 		private String ticketNumber;
 		private String description;
 		private Turnos shift;
@@ -167,7 +170,7 @@ public class Evento {
 			return this;
 		}
 
-		public EventBuilder entryDate(String date) {
+		public EventBuilder entryDate(LocalDate date) {
 			this.entryDate = date;
 
 			return this;
@@ -204,8 +207,4 @@ public class Evento {
 		}
 	}
 
-	public void setEntryDate(LocalDate value) {
-		// TODO Auto-generated method stub
-
-	}
 }

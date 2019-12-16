@@ -1,5 +1,6 @@
 package com.banreservas.monitoreo.repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -23,22 +24,22 @@ public class EventRepositoryStub implements EventRepository {
 	{
 		Evento.EventBuilder builder = new Evento.EventBuilder();
 
-		Evento a = builder.id(1L).entryDate("11/11/2019").ticketNumber("335361543").description(
+		Evento a = builder.id(1L).entryDate(LocalDate.of(2019, 3, 12)).ticketNumber("335361543").description(
 				"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)")
 				.shift(Turnos.MADRUGADA).comentary("Gerencia Soporte Sistemas Distribuidos.").status(false)
 				.severity(Severidad.ALTA).build();
-		Evento b = builder.id(2L).entryDate("30/10/2019").ticketNumber("335362015")
+		Evento b = builder.id(2L).entryDate(LocalDate.of(2019, 6, 23)).ticketNumber("335362015")
 				.description("Inconvenientes con las consultas de firmas vía Siebel CRM").shift(Turnos.VESPERTINO)
 				.comentary("DTEL Zona Metro Este").status(true).severity(Severidad.BAJA).build();
-		Evento c = builder.id(3L).entryDate("09/11/2019").ticketNumber("335361566").description(
+		Evento c = builder.id(3L).entryDate(LocalDate.of(2019, 9, 11)).ticketNumber("335361566").description(
 				"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)")
 				.shift(Turnos.MATUTINO).comentary("Gerencia Soporte Sistemas Distribuidos.").status(false)
 				.severity(Severidad.MEDIA).build();
-		Evento d = builder.id(4L).entryDate("09/11/2019").ticketNumber("335361766").description(
+		Evento d = builder.id(4L).entryDate(LocalDate.of(2019, 9, 26)).ticketNumber("335361766").description(
 				"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)")
 				.shift(Turnos.MATUTINO).comentary("Gerencia Soporte Sistemas Distribuidos.").status(true)
 				.severity(Severidad.BAJA).build();
-		
+
 		events.add(a);
 		events.add(b);
 		events.add(c);
