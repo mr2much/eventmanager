@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -135,8 +137,25 @@ public class EventManager extends Application {
 		// table.setFixedCellSize(60.0);
 
 		entryDateColumn.setMinWidth(60);
-		entryDateColumn.setCellValueFactory(new PropertyValueFactory<Evento, LocalDate>("entryDate"));
-		// entryDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+		entryDateColumn.setCellValueFactory(new PropertyValueFactory<>("entryDate"));
+		entryDateColumn.setCellFactory(col -> new TableCell<Evento, LocalDate>() {
+			DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			DatePicker datePicker = new DatePicker();
+
+			@Override
+			public void updateItem(LocalDate date, boolean empty) {
+				super.updateItem(date, empty);
+
+				if (empty) {
+					setText(null);
+					setGraphic(null);
+				} else {
+					datePicker.setValue(date);
+//					setText(format.format(date));
+					setGraphic(datePicker);
+				}
+			}
+		});
 		entryDateColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, LocalDate>>) t -> {
 			t.getTableView().getItems().get(t.getTablePosition().getRow()).setEntryDate(t.getNewValue());
 		});

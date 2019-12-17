@@ -12,7 +12,6 @@ public class Evento {
 	private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private long id;
 	private SimpleObjectProperty<LocalDate> entryDate = new SimpleObjectProperty<>();
-	// private SimpleStringProperty entryDate = new SimpleStringProperty();
 	private SimpleStringProperty ticketNumber = new SimpleStringProperty();
 	private SimpleStringProperty description = new SimpleStringProperty();
 	private SimpleStringProperty comentary = new SimpleStringProperty();
@@ -34,7 +33,6 @@ public class Evento {
 		super();
 		this.id = id;
 		this.entryDate = new SimpleObjectProperty<>(entryDate);
-		// this.entryDate = new SimpleStringProperty(entryDate);
 		this.ticketNumber = new SimpleStringProperty(ticketNumber);
 		this.description = new SimpleStringProperty(description);
 		this.shift = shift;
@@ -59,8 +57,8 @@ public class Evento {
 		return description;
 	}
 
-	public final String getEntryDate() {
-		return dateFormat.format(entryDate.get());
+	public final LocalDate getEntryDate() {
+		return entryDate.get();
 	}
 
 	public final SimpleObjectProperty<LocalDate> getEntryDateProperty() {
