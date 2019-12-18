@@ -16,6 +16,11 @@ public class Evento {
 	private SimpleStringProperty description = new SimpleStringProperty();
 	private SimpleStringProperty comentary = new SimpleStringProperty();
 	private SimpleBooleanProperty status = new SimpleBooleanProperty();
+	// Necesito usuario que registro el evento
+	// Fecha y hora de apertura
+	// Fecha y hora de cierre
+	// Fecha y hora de ultima modificacion
+	// Nombre de quien edito el Evento por ultima vez
 	private Turnos shift;
 	private Severidad severity;
 

@@ -1,8 +1,12 @@
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
 
 import com.banreservas.monitoreo.controller.EventTableViewController;
 import com.banreservas.monitoreo.model.Evento;
@@ -21,7 +25,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -44,7 +47,6 @@ import javafx.util.Callback;
 
 public class EventManager extends Application {
 
-	private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private EventTableViewController controller = new EventTableViewController();
 	private EventRepository repository = new EventRepositoryStub();
 	TableColumn<Evento, String> entryDateColumn = new TableColumn<>("Fecha");
@@ -102,7 +104,7 @@ public class EventManager extends Application {
 				Optional<Evento> optionalEvento = dlg.showAndWait();
 
 				optionalEvento.ifPresent((Evento evento) -> {
-					System.out.println("Evento: " + evento.toString());
+					System.out.println("Evento: " + System.getProperty("user.name"));
 					controller.add(evento);
 				});
 
