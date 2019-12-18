@@ -75,7 +75,7 @@ public class EventDialog extends Dialog<Evento> {
 		tfEventTicket.setPromptText("Numero de Ticket");
 
 		Label lblEventSeverity = new Label("Indique Severidad de Evento");
-		ComboBox<Severidad> cmbSeverity = new ComboBox(FXCollections.observableArrayList(Severidad.values()));
+		ComboBox<Severidad> cmbSeverity = new ComboBox<>(FXCollections.observableArrayList(Severidad.values()));
 		cmbSeverity.getSelectionModel().selectLast();
 
 		datePicker.setConverter(new StringConverter<LocalDate>() {
@@ -107,7 +107,7 @@ public class EventDialog extends Dialog<Evento> {
 		taEventDescription.setPrefRowCount(5);
 
 		Label lblTurno = new Label("Especifique el Turno");
-		ComboBox<Turnos> cmbTurnos = new ComboBox(FXCollections.observableArrayList(Turnos.values()));
+		ComboBox<Turnos> cmbTurnos = new ComboBox<>(FXCollections.observableArrayList(Turnos.values()));
 		cmbTurnos.getSelectionModel().selectFirst();
 
 		Label lblComentary = new Label("Agregar Comentario");

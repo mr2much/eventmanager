@@ -57,8 +57,8 @@ public class Evento {
 		return description;
 	}
 
-	public final LocalDate getEntryDate() {
-		return entryDate.get();
+	public final String getEntryDate() {
+		return dateFormat.format(entryDate.get());
 	}
 
 	public final SimpleObjectProperty<LocalDate> getEntryDateProperty() {

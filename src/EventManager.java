@@ -44,9 +44,10 @@ import javafx.util.Callback;
 
 public class EventManager extends Application {
 
+	private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private EventTableViewController controller = new EventTableViewController();
 	private EventRepository repository = new EventRepositoryStub();
-	TableColumn<Evento, LocalDate> entryDateColumn = new TableColumn<>("Fecha");
+	TableColumn<Evento, String> entryDateColumn = new TableColumn<>("Fecha");
 	TableColumn<Evento, String> ticketNumberColumn = new TableColumn<>("Ticket");
 	TableColumn<Evento, String> descriptionColumn = new TableColumn<>("Reporte de Evento");
 	TableColumn<Evento, Turnos> shiftColumn = new TableColumn<>("Turno");
@@ -138,27 +139,8 @@ public class EventManager extends Application {
 
 		entryDateColumn.setMinWidth(60);
 		entryDateColumn.setCellValueFactory(new PropertyValueFactory<>("entryDate"));
-		entryDateColumn.setCellFactory(col -> new TableCell<Evento, LocalDate>() {
-			DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			DatePicker datePicker = new DatePicker();
-
-			@Override
-			public void updateItem(LocalDate date, boolean empty) {
-				super.updateItem(date, empty);
-
-				if (empty) {
-					setText(null);
-					setGraphic(null);
-				} else {
-					datePicker.setValue(date);
-//					setText(format.format(date));
-					setGraphic(datePicker);
-				}
-			}
-		});
-		entryDateColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, LocalDate>>) t -> {
-			t.getTableView().getItems().get(t.getTablePosition().getRow()).setEntryDate(t.getNewValue());
-		});
+		entryDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+		entryDateColumn.setEditable(false);
 
 		ticketNumberColumn.setMinWidth(60);
 		ticketNumberColumn.setCellValueFactory(new PropertyValueFactory<Evento, String>("ticketNumber"));
@@ -170,7 +152,6 @@ public class EventManager extends Application {
 		descriptionColumn.setMinWidth(300);
 		descriptionColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
 			t.getTableView().getItems().get(t.getTablePosition().getRow()).setDescription(t.getNewValue());
-			System.out.println("F this: " + t.getNewValue());
 		});
 
 		Callback<TableColumn<Evento, String>, TableCell<Evento, String>> textAreaCellFactory = new Callback<TableColumn<Evento, String>, TableCell<Evento, String>>() {
