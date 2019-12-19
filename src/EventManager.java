@@ -286,43 +286,39 @@ public class EventManager extends Application {
 
 		// Estatus del evento cambia cuando se hace right click en el row
 		// correspondiente al evento
-		table.setRowFactory(tv -> {
-			TableRow<Evento> row = new TableRow<>();
-			if (!row.isEmpty()) {
-				System.out.println("Is not empty");
-			} else {
-				Platform.runLater(() -> table.requestLayout());
-				System.out.println("Not empty " + row.getIndex());
-				Evento ev = row.getItem();
-				if (ev != null) {
-					System.out.println("Evento not null");
+		table.setRowFactory(tv -> new TableRow<Evento>() {
+
+			@Override
+			protected void updateItem(Evento item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (!empty) {
+					this.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
+						if (e.getButton() == MouseButton.SECONDARY) {
+							Platform.runLater(() -> table.requestLayout());
+							Evento evento = this.getTableView().getSelectionModel().getSelectedItem();
+
+							boolean value = evento.getStatus();
+							evento.setStatus(!value);
+
+							this.getTableView().getItems().set(getIndex(), evento);
+						}
+
+					});
+
+					Tooltip tooltip = new Tooltip();
+					tooltip.setText("Abierto por:" + "\nAbierto:" + "\nCerrado:" + "\nUltima Modificación:"
+							+ "\nUltima Edición por:\n");
+					this.setTooltip(tooltip);
+
+					// Evento ev = this.getItem();
+					//
+					// if (ev != null) {
+					// System.out.println(ev.toString());
+					// }
 				}
+
 			}
-
-			row.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
-				if (e.getButton() == MouseButton.SECONDARY) {
-					Platform.runLater(() -> table.requestLayout());
-					Evento evento = row.getTableView().getSelectionModel().getSelectedItem();
-
-					boolean value = evento.getStatus();
-					evento.setStatus(!value);
-
-					row.getTableView().getItems().set(row.getIndex(), evento);
-				}
-
-			});
-
-			Tooltip tooltip = new Tooltip();
-			tooltip.setText("Abierto por:" + "\nAbierto:" + "\nCerrado:" + "\nUltima Modificación:"
-					+ "\nUltima Edición por:\n");
-			row.setTooltip(tooltip);
-
-			// Try to obtain an individual Evento
-			// for (Evento ev : table.getItems()) {
-			// System.out.println(ev.toString());
-			// }
-
-			return row;
 		});
 
 		controller.addListener(new ListChangeListener<Evento>() {
