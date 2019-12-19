@@ -1,12 +1,6 @@
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Properties;
-import java.util.Set;
 
 import com.banreservas.monitoreo.controller.EventTableViewController;
 import com.banreservas.monitoreo.model.Evento;
@@ -32,6 +26,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -296,8 +291,14 @@ public class EventManager extends Application {
 			if (!row.isEmpty()) {
 				System.out.println("Is not empty");
 			} else {
-				System.out.println("Not empty");
+				Platform.runLater(() -> table.requestLayout());
+				System.out.println("Not empty " + row.getIndex());
+				Evento ev = row.getItem();
+				if (ev != null) {
+					System.out.println("Evento not null");
+				}
 			}
+
 			row.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
 				if (e.getButton() == MouseButton.SECONDARY) {
 					Platform.runLater(() -> table.requestLayout());
@@ -310,6 +311,16 @@ public class EventManager extends Application {
 				}
 
 			});
+
+			Tooltip tooltip = new Tooltip();
+			tooltip.setText("Abierto por:" + "\nAbierto:" + "\nCerrado:" + "\nUltima Modificación:"
+					+ "\nUltima Edición por:\n");
+			row.setTooltip(tooltip);
+
+			// Try to obtain an individual Evento
+			// for (Evento ev : table.getItems()) {
+			// System.out.println(ev.toString());
+			// }
 
 			return row;
 		});
