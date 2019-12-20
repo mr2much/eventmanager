@@ -308,14 +308,8 @@ public class EventManager extends Application {
 
 					Tooltip tooltip = new Tooltip();
 					tooltip.setText("Abierto por:" + "\nAbierto:" + "\nCerrado:" + "\nUltima Modificación:"
-							+ "\nUltima Edición por:\n");
+							+ "\nUltima Edición por:");
 					this.setTooltip(tooltip);
-
-					// Evento ev = this.getItem();
-					//
-					// if (ev != null) {
-					// System.out.println(ev.toString());
-					// }
 				}
 
 			}
