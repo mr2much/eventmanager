@@ -3,6 +3,7 @@ package com.banreservas.monitoreo.view;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import com.banreservas.monitoreo.model.EventInfo;
 import com.banreservas.monitoreo.model.Evento;
 import com.banreservas.monitoreo.model.Severidad;
 import com.banreservas.monitoreo.model.Turnos;
@@ -139,6 +140,9 @@ public class EventDialog extends Dialog<Evento> {
 					newEvent.setShift(cmbTurnos.getValue());
 					newEvent.setComentary(taEventComentary.getText());
 					newEvent.setStatus(false);
+					newEvent.setEventInfo(new EventInfo.EventInfoBuilder().username(System.getProperty("user.name"))
+							.openDate(LocalDate.now()).closeDate(LocalDate.now()).editDate(LocalDate.now())
+							.editUsername(System.getProperty("user.name")).build());
 
 					return newEvent;
 				}

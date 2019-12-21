@@ -99,7 +99,6 @@ public class EventManager extends Application {
 				Optional<Evento> optionalEvento = dlg.showAndWait();
 
 				optionalEvento.ifPresent((Evento evento) -> {
-					System.out.println("Evento: " + System.getProperty("user.name"));
 					controller.add(evento);
 				});
 

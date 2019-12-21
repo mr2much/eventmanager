@@ -16,14 +16,9 @@ public class Evento {
 	private SimpleStringProperty description = new SimpleStringProperty();
 	private SimpleStringProperty comentary = new SimpleStringProperty();
 	private SimpleBooleanProperty status = new SimpleBooleanProperty();
-	// Necesito usuario que registro el evento
-	// Fecha y hora de apertura
-	// Fecha y hora de cierre
-	// Fecha y hora de ultima modificacion
-	// Nombre de quien edito el Evento por ultima vez
-	// Posiblemente crear clase que se llame EventInformation
 	private Turnos shift;
 	private Severidad severity;
+	private EventInfo eventInfo = new EventInfo();
 
 	public Evento() {
 
@@ -31,11 +26,11 @@ public class Evento {
 
 	private Evento(EventBuilder builder) {
 		this(builder.id, builder.entryDate, builder.ticketNumber, builder.description, builder.shift, builder.comentary,
-				builder.status, builder.severity);
+				builder.status, builder.severity, builder.eventInfo);
 	}
 
 	public Evento(long id, LocalDate entryDate, String ticketNumber, String description, Turnos shift, String comentary,
-			boolean status, Severidad severity) {
+			boolean status, Severidad severity, EventInfo eventInfo) {
 		super();
 		this.id = id;
 		this.entryDate = new SimpleObjectProperty<>(entryDate);
@@ -45,6 +40,15 @@ public class Evento {
 		this.comentary = new SimpleStringProperty(comentary);
 		setStatus(status);
 		setSeverity(severity);
+		this.eventInfo = eventInfo;
+	}
+
+	public void setEventInfo(EventInfo eventInfo) {
+		this.eventInfo = eventInfo;
+	}
+
+	public EventInfo getEventInfo() {
+		return eventInfo;
 	}
 
 	public final String getComentary() {
@@ -144,8 +148,8 @@ public class Evento {
 	@Override
 	public String toString() {
 		return "Evento [id=" + id + ", entryDate=" + entryDate.get() + ", ticketNumber=" + ticketNumber.get()
-				+ ", description=" + description.get() + ", shift=" + shift + ", comentary=" + comentary.get()
-				+ ", status=" + status.get() + ", severity=" + severity + "]";
+				+ ", description=" + description.get() + ", comentary=" + comentary.get() + ", status=" + status.get()
+				+ ", shift=" + shift + ", severity=" + severity + ", eventInfo=" + eventInfo.toString() + "]";
 	}
 
 	public static class EventBuilder {
@@ -157,12 +161,19 @@ public class Evento {
 		private String comentary;
 		private boolean status;
 		private Severidad severity;
+		private EventInfo eventInfo;
 
 		public EventBuilder() {
 		}
 
 		public Evento build() {
 			return new Evento(this);
+		}
+
+		public EventBuilder eventInfo(EventInfo info) {
+			this.eventInfo = info;
+
+			return this;
 		}
 
 		public EventBuilder comentary(String comentary) {

@@ -11,6 +11,9 @@ public class EventInfo {
 	private LocalDate editDate;
 	private String editUsername;
 
+	public EventInfo() {
+	}
+
 	public EventInfo(EventInfoBuilder builder) {
 		this.id = builder.id;
 		this.username = builder.username;

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.banreservas.monitoreo.model.EventInfo;
 import com.banreservas.monitoreo.model.Evento;
 import com.banreservas.monitoreo.model.Severidad;
 import com.banreservas.monitoreo.model.Turnos;
@@ -18,25 +19,42 @@ import javafx.collections.ObservableList;
 public class EventRepositoryStub implements EventRepository {
 
 	private ObservableList<Evento> events = FXCollections.observableArrayList();
-	private Long idIndex = 4L;
+	private Long idIndex = 1L;
 
 	{
 		Evento.EventBuilder builder = new Evento.EventBuilder();
+		EventInfo.EventInfoBuilder infoBuilder = new EventInfo.EventInfoBuilder();
 
-		Evento a = builder.id(1L).entryDate(LocalDate.of(2019, 3, 12)).ticketNumber("335361543")
+		EventInfo eventInfo = infoBuilder.id(idIndex).username("ALockward").openDate(LocalDate.now())
+				.closeDate(LocalDate.now()).editDate(LocalDate.now()).editUsername("ALockward").build();
+
+		Evento a = builder.id(idIndex).entryDate(LocalDate.of(2019, 3, 12)).ticketNumber("335361543")
 				.description(
 						"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)")
 				.shift(Turnos.MADRUGADA).comentary("Gerencia Soporte Sistemas Distribuidos.").status(false)
-				.severity(Severidad.ALTA).build();
-		Evento b = builder.id(2L).entryDate(LocalDate.of(2019, 6, 23)).ticketNumber("335362015")
+				.severity(Severidad.ALTA).eventInfo(eventInfo).build();
+
+		idIndex++;
+		eventInfo = infoBuilder.id(idIndex).username("GBonilla").openDate(LocalDate.now()).closeDate(LocalDate.now())
+				.editDate(LocalDate.now()).editUsername("ALockward").build();
+		Evento b = builder.id(idIndex).entryDate(LocalDate.of(2019, 6, 23)).ticketNumber("335362015")
 				.description("Inconvenientes con las consultas de firmas vía Siebel CRM").shift(Turnos.VESPERTINO)
-				.comentary("DTEL Zona Metro Este").status(true).severity(Severidad.BAJA).build();
-		Evento c = builder.id(3L).entryDate(LocalDate.of(2019, 9, 11)).ticketNumber("335361566")
+				.comentary("DTEL Zona Metro Este").status(true).severity(Severidad.BAJA).eventInfo(eventInfo).build();
+
+		idIndex++;
+		eventInfo = infoBuilder.id(idIndex).username("ALockward").openDate(LocalDate.now()).closeDate(LocalDate.now())
+				.editDate(LocalDate.now()).editUsername("GBonilla").build();
+		Evento c = builder.id(idIndex).entryDate(LocalDate.of(2019, 9, 11)).ticketNumber("335361566")
 				.description(
 						"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)")
 				.shift(Turnos.MATUTINO).comentary("Gerencia Soporte Sistemas Distribuidos.").status(false)
 				.severity(Severidad.MEDIA).build();
-		Evento d = builder.id(4L).entryDate(LocalDate.of(2019, 9, 26)).ticketNumber("335361766")
+		idIndex++;
+
+		eventInfo = infoBuilder.id(idIndex).username("GBonilla").openDate(LocalDate.now()).closeDate(null)
+				.editDate(LocalDate.now()).editUsername("GBonilla").build();
+
+		Evento d = builder.id(idIndex).entryDate(LocalDate.of(2019, 9, 26)).ticketNumber("335361766")
 				.description(
 						"Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas) Banca Solidaria Charles de Gaulle fuera de servicio por problemas del inversor (baterias descargadas)")
 				.shift(Turnos.MATUTINO).comentary("Gerencia Soporte Sistemas Distribuidos.").status(true)
@@ -52,6 +70,7 @@ public class EventRepositoryStub implements EventRepository {
 	public boolean add(Evento event) {
 		idIndex++;
 		event.setId(idIndex);
+		event.getEventInfo().setId(idIndex);
 		return events.add(event);
 	}
 
