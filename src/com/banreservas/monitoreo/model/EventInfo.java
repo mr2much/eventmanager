@@ -1,14 +1,16 @@
 package com.banreservas.monitoreo.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class EventInfo {
 
+	private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private long id;
 	private String username;
-	private LocalDate openDate;
-	private LocalDate closeDate;
-	private LocalDate editDate;
+	private String openDate = "";
+	private String closeDate = "";
+	private String editDate = "";
 	private String editUsername;
 
 	public EventInfo() {
@@ -17,9 +19,9 @@ public class EventInfo {
 	public EventInfo(EventInfoBuilder builder) {
 		this.id = builder.id;
 		this.username = builder.username;
-		this.openDate = builder.openDate;
-		this.closeDate = builder.closeDate;
-		this.editDate = builder.editDate;
+		setOpenDate(builder.openDate);
+		setCloseDate(builder.closeDate);
+		setEditDate(builder.editDate);
 		this.editUsername = builder.editUsername;
 	}
 
@@ -31,11 +33,11 @@ public class EventInfo {
 		return id;
 	}
 
-	public LocalDate getCloseDate() {
+	public String getCloseDate() {
 		return closeDate;
 	}
 
-	public LocalDate getEditDate() {
+	public String getEditDate() {
 		return editDate;
 	}
 
@@ -43,7 +45,7 @@ public class EventInfo {
 		return editUsername;
 	}
 
-	public LocalDate getOpenDate() {
+	public String getOpenDate() {
 		return openDate;
 	}
 
@@ -51,20 +53,26 @@ public class EventInfo {
 		return username;
 	}
 
-	public void setCloseDate(LocalDate closeDate) {
-		this.closeDate = closeDate;
+	public void setCloseDate(LocalDate date) {
+		if (date != null) {
+			this.closeDate = date.format(dateFormat);
+		}
 	}
 
-	public void setEditDate(LocalDate editDate) {
-		this.editDate = editDate;
+	public void setEditDate(LocalDate date) {
+		if (date != null) {
+			this.editDate = date.format(dateFormat);
+		}
 	}
 
 	public void setEditUsername(String editUsername) {
 		this.editUsername = editUsername;
 	}
 
-	public void setOpenDate(LocalDate openDate) {
-		this.openDate = openDate;
+	public void setOpenDate(LocalDate date) {
+		if (date != null) {
+			this.openDate = date.format(dateFormat);
+		}
 	}
 
 	public void setUsername(String username) {

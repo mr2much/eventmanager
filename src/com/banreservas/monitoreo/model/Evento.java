@@ -4,21 +4,29 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Evento {
 
 	private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private long id;
-	private SimpleObjectProperty<LocalDate> entryDate = new SimpleObjectProperty<>();
-	private SimpleStringProperty ticketNumber = new SimpleStringProperty();
-	private SimpleStringProperty description = new SimpleStringProperty();
-	private SimpleStringProperty comentary = new SimpleStringProperty();
-	private SimpleBooleanProperty status = new SimpleBooleanProperty();
+	private SimpleStringProperty entryDate;
+	private SimpleStringProperty ticketNumber;
+	private SimpleStringProperty description;
+	private SimpleStringProperty comentary;
+	private SimpleBooleanProperty status;
+	private EventInfo eventInfo;
 	private Turnos shift;
 	private Severidad severity;
-	private EventInfo eventInfo = new EventInfo();
+
+	{
+		entryDate = new SimpleStringProperty();
+		ticketNumber = new SimpleStringProperty();
+		description = new SimpleStringProperty();
+		comentary = new SimpleStringProperty();
+		status = new SimpleBooleanProperty();
+		eventInfo = new EventInfo();
+	}
 
 	public Evento() {
 
@@ -33,7 +41,7 @@ public class Evento {
 			boolean status, Severidad severity, EventInfo eventInfo) {
 		super();
 		this.id = id;
-		this.entryDate = new SimpleObjectProperty<>(entryDate);
+		setEntryDate(entryDate);
 		this.ticketNumber = new SimpleStringProperty(ticketNumber);
 		this.description = new SimpleStringProperty(description);
 		this.shift = shift;
@@ -68,10 +76,10 @@ public class Evento {
 	}
 
 	public final String getEntryDate() {
-		return dateFormat.format(entryDate.get());
+		return entryDate.get();
 	}
 
-	public final SimpleObjectProperty<LocalDate> getEntryDateProperty() {
+	public final SimpleStringProperty getEntryDateProperty() {
 		return entryDate;
 	}
 
@@ -111,8 +119,8 @@ public class Evento {
 		this.description.set(description);
 	}
 
-	public final void setEntryDate(LocalDate entryDate) {
-		this.entryDate.set(entryDate);
+	public final void setEntryDate(LocalDate date) {
+		this.entryDate.set(date.format(dateFormat));
 	}
 
 	public final void setId(long id) {

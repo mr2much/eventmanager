@@ -51,7 +51,7 @@ public class EventRepositoryStub implements EventRepository {
 				.severity(Severidad.MEDIA).build();
 		idIndex++;
 
-		eventInfo = infoBuilder.id(idIndex).username("GBonilla").openDate(LocalDate.now()).closeDate(null)
+		eventInfo = infoBuilder.id(idIndex).username("GBonilla").openDate(LocalDate.now()).closeDate(LocalDate.now())
 				.editDate(LocalDate.now()).editUsername("GBonilla").build();
 
 		Evento d = builder.id(idIndex).entryDate(LocalDate.of(2019, 9, 26)).ticketNumber("335361766")

@@ -39,7 +39,6 @@ public class EventDialog extends Dialog<Evento> {
 	private GridPane grid;
 	DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	final private DatePicker datePicker = new DatePicker(LocalDate.now());
-	final private TextField tfEventDate = new TextField();
 	final private TextField tfEventTicket = new TextField();
 	private TextArea taEventDescription = new TextArea();
 	private TextArea taEventComentary = new TextArea();
@@ -67,9 +66,6 @@ public class EventDialog extends Dialog<Evento> {
 
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10, 0, 10, 0));
-
-		tfEventDate.setPromptText("Fecha del Evento: DD/MM/AAAA");
-		tfEventDate.setMinWidth(200);
 
 		setTextFieldValidation(tfEventTicket, taEventDescription, taEventComentary);
 
@@ -101,7 +97,6 @@ public class EventDialog extends Dialog<Evento> {
 		});
 
 		vbox.getChildren().addAll(datePicker, tfEventTicket);
-		// vbox.getChildren().addAll(tfEventDate, tfEventTicket);
 
 		Label lblEventDescription = new Label("Descripcion del Evento");
 		taEventDescription.setWrapText(true);
@@ -131,17 +126,18 @@ public class EventDialog extends Dialog<Evento> {
 			@Override
 			public Evento call(ButtonType button) {
 				if (button == addBtnType) {
-					Evento newEvent = new Evento.EventBuilder().build();
+					Evento newEvent = new Evento.EventBuilder()
+							.entryDate(datePicker.getValue())
+							.ticketNumber(tfEventTicket.getText())
+							.severity(cmbSeverity.getValue())
+							.description(taEventDescription.getText())
+							.shift(cmbTurnos.getValue())
+							.comentary(taEventComentary.getText())
+							.status(false)
+							.build();
 
-					newEvent.setEntryDate(datePicker.getValue());
-					newEvent.setTicketNumber(tfEventTicket.getText());
-					newEvent.setSeverity(cmbSeverity.getValue());
-					newEvent.setDescription(taEventDescription.getText());
-					newEvent.setShift(cmbTurnos.getValue());
-					newEvent.setComentary(taEventComentary.getText());
-					newEvent.setStatus(false);
 					newEvent.setEventInfo(new EventInfo.EventInfoBuilder().username(System.getProperty("user.name"))
-							.openDate(LocalDate.now()).closeDate(LocalDate.now()).editDate(LocalDate.now())
+							.openDate(LocalDate.now()).editDate(LocalDate.now())
 							.editUsername(System.getProperty("user.name")).build());
 
 					return newEvent;
