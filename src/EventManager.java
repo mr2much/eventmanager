@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.banreservas.monitoreo.controller.EventTableViewController;
+import com.banreservas.monitoreo.model.EventInfo;
 import com.banreservas.monitoreo.model.Evento;
 import com.banreservas.monitoreo.model.Turnos;
 import com.banreservas.monitoreo.repository.EventRepository;
@@ -50,6 +51,7 @@ public class EventManager extends Application {
 	TableColumn<Evento, Turnos> shiftColumn = new TableColumn<>("Turno");
 	TableColumn<Evento, String> comentaryColumn = new TableColumn<>("Comentarios");
 	TableColumn<Evento, Boolean> statusColumn = new TableColumn<>("Estatus");
+	Tooltip eventInfoTooltip = new Tooltip();
 
 	private List<TableColumn<Evento, ?>> columnas;
 
@@ -285,6 +287,43 @@ public class EventManager extends Application {
 
 		// Estatus del evento cambia cuando se hace right click en el row
 		// correspondiente al evento
+		// table.setRowFactory(new Callback<TableView<Evento>,
+		// TableRow<Evento>>() {
+		// @Override
+		// public TableRow<Evento> call(TableView<Evento> tv) {
+		// final TableRow<Evento> row = new TableRow<Evento>() {
+		// @Override
+		// protected void updateItem(Evento item, boolean empty) {
+		// super.updateItem(item, empty);
+		//
+		// if (!empty) {
+		// this.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
+		// if (e.getButton() == MouseButton.SECONDARY) {
+		// Platform.runLater(() -> table.requestLayout());
+		// Evento evento =
+		// this.getTableView().getSelectionModel().getSelectedItem();
+		//
+		// boolean value = evento.getStatus();
+		// evento.setStatus(!value);
+		//
+		// this.getTableView().getItems().set(getIndex(), evento);
+		// }
+		//
+		// });
+		//
+		// System.out.println("What is this: " + item.toString());
+		// }
+		// }
+		// };
+		//
+		// eventInfoTooltip = getEventInfoTooltip(row.getItem());
+		// row.setTooltip(eventInfoTooltip);
+		//
+		// return row;
+		//
+		// }
+		// });
+
 		table.setRowFactory(tv -> new TableRow<Evento>() {
 
 			@Override
@@ -295,20 +334,19 @@ public class EventManager extends Application {
 					this.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
 						if (e.getButton() == MouseButton.SECONDARY) {
 							Platform.runLater(() -> table.requestLayout());
-							Evento evento = this.getTableView().getSelectionModel().getSelectedItem();
+							// Evento evento =
+							// this.getTableView().getSelectionModel().getSelectedItem();
 
-							boolean value = evento.getStatus();
-							evento.setStatus(!value);
+							boolean value = item.getStatus();
+							item.setStatus(!value);
 
-							this.getTableView().getItems().set(getIndex(), evento);
+							this.getTableView().getItems().set(getIndex(), item);
 						}
 
 					});
 
-					Tooltip tooltip = new Tooltip();
-					tooltip.setText("Abierto por:" + "\nAbierto:" + "\nCerrado:" + "\nUltima Modificación:"
-							+ "\nUltima Edición por:");
-					this.setTooltip(tooltip);
+					eventInfoTooltip = getEventInfoTooltip(item);
+					this.setTooltip(eventInfoTooltip);
 				}
 
 			}
@@ -341,4 +379,17 @@ public class EventManager extends Application {
 		table.setId("event-table");
 	}
 
+	private Tooltip getEventInfoTooltip(Evento evento) {
+		Tooltip result = new Tooltip();
+
+		if (evento != null) {
+			EventInfo eventInfo = evento.getEventInfo();
+
+			result.setText("Abierto por: " + eventInfo.getUsername() + "\nFecha Apertura: " + eventInfo.getOpenDate()
+					+ "\nFecha Cierre: " + eventInfo.getCloseDate() + "\nUltima Modificación: "
+					+ eventInfo.getEditDate() + "\nUltima Edición por: " + eventInfo.getEditUsername());
+		}
+
+		return result;
+	}
 }

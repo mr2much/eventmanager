@@ -56,12 +56,16 @@ public class EventInfo {
 	public void setCloseDate(LocalDate date) {
 		if (date != null) {
 			this.closeDate = date.format(dateFormat);
+		} else {
+			this.closeDate = "";
 		}
 	}
 
 	public void setEditDate(LocalDate date) {
 		if (date != null) {
 			this.editDate = date.format(dateFormat);
+		} else {
+			this.closeDate = "";
 		}
 	}
 
@@ -72,6 +76,8 @@ public class EventInfo {
 	public void setOpenDate(LocalDate date) {
 		if (date != null) {
 			this.openDate = date.format(dateFormat);
+		} else {
+			this.closeDate = "";
 		}
 	}
 
