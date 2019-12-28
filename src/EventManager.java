@@ -9,6 +9,7 @@ import com.banreservas.monitoreo.model.Turnos;
 import com.banreservas.monitoreo.repository.EventRepository;
 import com.banreservas.monitoreo.repository.EventRepositoryStub;
 import com.banreservas.monitoreo.view.EventDialog;
+import com.banreservas.monitoreo.view.EventInfoTooltip;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -51,7 +52,8 @@ public class EventManager extends Application {
 	TableColumn<Evento, Turnos> shiftColumn = new TableColumn<>("Turno");
 	TableColumn<Evento, String> comentaryColumn = new TableColumn<>("Comentarios");
 	TableColumn<Evento, Boolean> statusColumn = new TableColumn<>("Estatus");
-	Tooltip eventInfoTooltip = new Tooltip();
+	EventInfoTooltip eventInfoTooltip = new EventInfoTooltip();
+	// Tooltip eventInfoTooltip = new Tooltip();
 
 	private List<TableColumn<Evento, ?>> columnas;
 
@@ -358,7 +360,10 @@ public class EventManager extends Application {
 			public void onChanged(javafx.collections.ListChangeListener.Change<? extends Evento> event) {
 				if (event.next()) {
 					if (event.wasUpdated()) {
-						System.out.println("Evento cambio: " + event.toString());
+						// updateEventInfoTooltip(event);
+						System.out.println("Fuck you " + controller.get(event.getFrom()).toString());
+						// System.out.println("Evento cambio: " +
+						// event.toString() + " " + event.getFrom());
 					}
 				}
 
@@ -370,6 +375,11 @@ public class EventManager extends Application {
 
 			@Override
 			public void onChanged(javafx.collections.ListChangeListener.Change<? extends Evento> event) {
+				if (event.next()) {
+					updateEventInfoTooltip(controller.get(event.getFrom()));
+					table.requestLayout();
+				}
+
 				System.out.println("Evento cambio: " + event.toString());
 			}
 
@@ -379,8 +389,8 @@ public class EventManager extends Application {
 		table.setId("event-table");
 	}
 
-	private Tooltip getEventInfoTooltip(Evento evento) {
-		Tooltip result = new Tooltip();
+	private EventInfoTooltip getEventInfoTooltip(Evento evento) {
+		EventInfoTooltip result = new EventInfoTooltip();
 
 		if (evento != null) {
 			EventInfo eventInfo = evento.getEventInfo();
@@ -391,5 +401,10 @@ public class EventManager extends Application {
 		}
 
 		return result;
+	}
+
+	private void updateEventInfoTooltip(Evento event) {
+		eventInfoTooltip.setEventInfo(event.getEventInfo());
+		System.out.println(eventInfoTooltip.toString());
 	}
 }
