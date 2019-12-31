@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,6 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -390,21 +390,24 @@ public class EventManager extends Application {
 	}
 
 	private EventInfoTooltip getEventInfoTooltip(Evento evento) {
-		EventInfoTooltip result = new EventInfoTooltip();
+		EventInfoTooltip result = new EventInfoTooltip(evento.getEventInfo());
 
 		if (evento != null) {
 			EventInfo eventInfo = evento.getEventInfo();
 
-			result.setText("Abierto por: " + eventInfo.getUsername() + "\nFecha Apertura: " + eventInfo.getOpenDate()
-					+ "\nFecha Cierre: " + eventInfo.getCloseDate() + "\nUltima Modificación: "
-					+ eventInfo.getEditDate() + "\nUltima Edición por: " + eventInfo.getEditUsername());
+//			result.setText("Abierto por: " + eventInfo.getUsername() + "\nFecha Apertura: " + eventInfo.getOpenDate()
+//					+ "\nFecha Cierre: " + eventInfo.getCloseDate() + "\nUltima Modificación: "
+//					+ eventInfo.getEditDate() + "\nUltima Edición por: " + eventInfo.getEditUsername());
 		}
 
 		return result;
 	}
 
 	private void updateEventInfoTooltip(Evento event) {
-		eventInfoTooltip.setEventInfo(event.getEventInfo());
-		System.out.println(eventInfoTooltip.toString());
+		EventInfo eventInfo = event.getEventInfo();
+		eventInfo.setEditDate(LocalDate.now());
+		event.setEventInfo(eventInfo);
+		eventInfoTooltip.setEventInfo(eventInfo);
+		System.out.println(eventInfoTooltip.getText());
 	}
 }
