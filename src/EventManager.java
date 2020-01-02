@@ -44,6 +44,7 @@ import javafx.util.Callback;
 
 public class EventManager extends Application {
 
+	private static final String localUsername = System.getProperty("user.name");
 	private EventTableViewController controller = new EventTableViewController();
 	private EventRepository repository = new EventRepositoryStub();
 	TableColumn<Evento, String> entryDateColumn = new TableColumn<>("Fecha");
@@ -53,7 +54,6 @@ public class EventManager extends Application {
 	TableColumn<Evento, String> comentaryColumn = new TableColumn<>("Comentarios");
 	TableColumn<Evento, Boolean> statusColumn = new TableColumn<>("Estatus");
 	EventInfoTooltip eventInfoTooltip = new EventInfoTooltip();
-	// Tooltip eventInfoTooltip = new Tooltip();
 
 	private List<TableColumn<Evento, ?>> columnas;
 
@@ -287,45 +287,6 @@ public class EventManager extends Application {
 
 		table.setItems(controller.data());
 
-		// Estatus del evento cambia cuando se hace right click en el row
-		// correspondiente al evento
-		// table.setRowFactory(new Callback<TableView<Evento>,
-		// TableRow<Evento>>() {
-		// @Override
-		// public TableRow<Evento> call(TableView<Evento> tv) {
-		// final TableRow<Evento> row = new TableRow<Evento>() {
-		// @Override
-		// protected void updateItem(Evento item, boolean empty) {
-		// super.updateItem(item, empty);
-		//
-		// if (!empty) {
-		// this.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
-		// if (e.getButton() == MouseButton.SECONDARY) {
-		// Platform.runLater(() -> table.requestLayout());
-		// Evento evento =
-		// this.getTableView().getSelectionModel().getSelectedItem();
-		//
-		// boolean value = evento.getStatus();
-		// evento.setStatus(!value);
-		//
-		// this.getTableView().getItems().set(getIndex(), evento);
-		// }
-		//
-		// });
-		//
-		// System.out.println("What is this: " + item.toString());
-		// }
-		// }
-		// };
-		//
-		// eventInfoTooltip = getEventInfoTooltip(row.getItem());
-		// row.setTooltip(eventInfoTooltip);
-		//
-		// return row;
-		//
-		// }
-		// });
-
 		table.setRowFactory(tv -> new TableRow<Evento>() {
 
 			@Override
@@ -360,10 +321,7 @@ public class EventManager extends Application {
 			public void onChanged(javafx.collections.ListChangeListener.Change<? extends Evento> event) {
 				if (event.next()) {
 					if (event.wasUpdated()) {
-						// updateEventInfoTooltip(event);
-						System.out.println("Fuck you " + controller.get(event.getFrom()).toString());
-						// System.out.println("Evento cambio: " +
-						// event.toString() + " " + event.getFrom());
+						System.out.println("Is this thing on?");
 					}
 				}
 
@@ -377,7 +335,6 @@ public class EventManager extends Application {
 			public void onChanged(javafx.collections.ListChangeListener.Change<? extends Evento> event) {
 				if (event.next()) {
 					updateEventInfoTooltip(controller.get(event.getFrom()));
-					table.requestLayout();
 				}
 
 				System.out.println("Evento cambio: " + event.toString());
@@ -390,24 +347,25 @@ public class EventManager extends Application {
 	}
 
 	private EventInfoTooltip getEventInfoTooltip(Evento evento) {
-		EventInfoTooltip result = new EventInfoTooltip(evento.getEventInfo());
-
-		if (evento != null) {
-			EventInfo eventInfo = evento.getEventInfo();
-
-//			result.setText("Abierto por: " + eventInfo.getUsername() + "\nFecha Apertura: " + eventInfo.getOpenDate()
-//					+ "\nFecha Cierre: " + eventInfo.getCloseDate() + "\nUltima Modificación: "
-//					+ eventInfo.getEditDate() + "\nUltima Edición por: " + eventInfo.getEditUsername());
-		}
-
-		return result;
+		return new EventInfoTooltip(evento.getEventInfo());
 	}
 
 	private void updateEventInfoTooltip(Evento event) {
 		EventInfo eventInfo = event.getEventInfo();
 		eventInfo.setEditDate(LocalDate.now());
+		eventInfo.setEditUsername(localUsername);
+
+		if (isSolved(event)) {
+			eventInfo.setCloseDate(LocalDate.now());
+		} else {
+			eventInfo.setCloseDate(null);
+		}
+
 		event.setEventInfo(eventInfo);
 		eventInfoTooltip.setEventInfo(eventInfo);
-		System.out.println(eventInfoTooltip.getText());
+	}
+
+	private boolean isSolved(Evento event) {
+		return event.getStatus();
 	}
 }

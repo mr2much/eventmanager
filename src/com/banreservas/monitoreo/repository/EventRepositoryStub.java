@@ -26,7 +26,7 @@ public class EventRepositoryStub implements EventRepository {
 		EventInfo.EventInfoBuilder infoBuilder = new EventInfo.EventInfoBuilder();
 
 		EventInfo eventInfo = infoBuilder.id(idIndex).username("ALockward").openDate(LocalDate.of(2019, 3, 12))
-				.editDate(LocalDate.of(2017, 4, 14)).editUsername("ALockward").build();
+				.editDate(LocalDate.of(2019, 4, 14)).editUsername("ALockward").build();
 
 		Evento a = builder.id(idIndex).entryDate(LocalDate.of(2019, 3, 12)).ticketNumber("335361543")
 				.description(
@@ -36,15 +36,15 @@ public class EventRepositoryStub implements EventRepository {
 
 		idIndex++;
 		eventInfo = infoBuilder.id(idIndex).username("GBonilla").openDate(LocalDate.now()).closeDate(LocalDate.now())
-				.editDate(LocalDate.of(2015, 6, 30)).editUsername("ALockward").build();
+				.editDate(LocalDate.now()).editUsername("ALockward").build();
 
 		Evento b = builder.id(idIndex).entryDate(LocalDate.of(2019, 6, 23)).ticketNumber("335362015")
 				.description("Inconvenientes con las consultas de firmas vía Siebel CRM").shift(Turnos.VESPERTINO)
 				.comentary("DTEL Zona Metro Este").status(true).severity(Severidad.BAJA).eventInfo(eventInfo).build();
 
 		idIndex++;
-		eventInfo = infoBuilder.id(idIndex).username("ALockward").openDate(LocalDate.now()).closeDate(null)
-				.editDate(LocalDate.of(2018, 11, 29)).editUsername("GBonilla").build();
+		eventInfo = infoBuilder.id(idIndex).username("ALockward").openDate(LocalDate.of(2019,9,11)).closeDate(null)
+				.editDate(LocalDate.of(2019, 9, 12)).editUsername("GBonilla").build();
 
 		Evento c = builder.id(idIndex).entryDate(LocalDate.of(2019, 9, 11)).ticketNumber("335361566")
 				.description(
@@ -53,7 +53,7 @@ public class EventRepositoryStub implements EventRepository {
 				.severity(Severidad.MEDIA).eventInfo(eventInfo).build();
 		idIndex++;
 
-		eventInfo = infoBuilder.id(idIndex).username("GBonilla").openDate(LocalDate.now()).closeDate(LocalDate.now())
+		eventInfo = infoBuilder.id(idIndex).username("GBonilla").openDate(LocalDate.of(2019,9,26)).closeDate(LocalDate.now())
 				.editDate(LocalDate.now()).editUsername("GBonilla").build();
 
 		Evento d = builder.id(idIndex).entryDate(LocalDate.of(2019, 9, 26)).ticketNumber("335361766")
