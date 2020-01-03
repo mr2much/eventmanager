@@ -26,7 +26,7 @@ public class EventRepositoryStub implements EventRepository {
 		EventInfo.EventInfoBuilder infoBuilder = new EventInfo.EventInfoBuilder();
 
 		EventInfo eventInfo = infoBuilder.id(idIndex).username("ALockward").openDate(LocalDate.of(2019, 3, 12))
-				.editDate(LocalDate.of(2019, 4, 14)).editUsername("ALockward").build();
+				.editDate(LocalDate.of(2019, 4, 14)).editUsername("JGuerrero").build();
 
 		Evento a = builder.id(idIndex).entryDate(LocalDate.of(2019, 3, 12)).ticketNumber("335361543")
 				.description(
@@ -54,7 +54,7 @@ public class EventRepositoryStub implements EventRepository {
 		idIndex++;
 
 		eventInfo = infoBuilder.id(idIndex).username("GBonilla").openDate(LocalDate.of(2019,9,26)).closeDate(LocalDate.now())
-				.editDate(LocalDate.now()).editUsername("GBonilla").build();
+				.editDate(LocalDate.now()).editUsername("WAlvarez").build();
 
 		Evento d = builder.id(idIndex).entryDate(LocalDate.of(2019, 9, 26)).ticketNumber("335361766")
 				.description(

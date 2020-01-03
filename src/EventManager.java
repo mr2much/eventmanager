@@ -135,6 +135,31 @@ public class EventManager extends Application {
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		table.setEditable(true);
 
+		table.setItems(controller.data());
+		table.setRowFactory(tv -> new TableRow<Evento>() {
+
+			@Override
+			protected void updateItem(Evento item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (!empty) {
+					this.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
+						if (e.getButton() == MouseButton.SECONDARY) {
+							Platform.runLater(() -> table.requestLayout());
+							boolean value = item.getStatus();
+							item.setStatus(!value);
+							this.getTableView().getItems().set(getIndex(), item);
+						}
+
+					});
+
+					eventInfoTooltip = getEventInfoTooltip(item);
+					this.setTooltip(eventInfoTooltip);
+				}
+
+			}
+		});
+
 		// table.setFixedCellSize(60.0);
 
 		entryDateColumn.setMinWidth(60);
@@ -147,6 +172,7 @@ public class EventManager extends Application {
 		ticketNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		ticketNumberColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
 			t.getTableView().getItems().get(t.getTablePosition().getRow()).setTicketNumber(t.getNewValue());
+			updateEventInfoTooltip(t.getRowValue());
 		});
 
 		descriptionColumn.setMinWidth(300);
@@ -211,9 +237,11 @@ public class EventManager extends Application {
 									if (e.getCode() == KeyCode.ENTER) {
 										l.setGraphic(null);
 										l.setText(ta.getText());
-										ta.requestFocus();
 										getTableView().getItems().get(getTableRow().getIndex())
 												.setDescription(ta.getText());
+										updateEventInfoTooltip(getTableView().getItems().get(getTableRow().getIndex()));
+
+										ta.requestFocus();
 									} else if (e.getCode() == KeyCode.ESCAPE) {
 										ta.setText(backup);
 										l.setGraphic(null);
@@ -249,6 +277,7 @@ public class EventManager extends Application {
 		shiftColumn.setCellFactory(ComboBoxTableCell.forTableColumn(shifts));
 		shiftColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, Turnos>>) t -> {
 			t.getTableView().getItems().get(t.getTablePosition().getRow()).setShift(t.getNewValue());
+			updateEventInfoTooltip(t.getRowValue());
 		});
 
 		comentaryColumn.setMinWidth(220);
@@ -256,7 +285,7 @@ public class EventManager extends Application {
 		comentaryColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		comentaryColumn.setOnEditCommit((EventHandler<CellEditEvent<Evento, String>>) t -> {
 			t.getTableView().getItems().get(t.getTablePosition().getRow()).setComentary(t.getNewValue());
-			;
+			updateEventInfoTooltip(t.getRowValue());
 		});
 
 		statusColumn.setMinWidth(40);
@@ -285,46 +314,15 @@ public class EventManager extends Application {
 
 		statusColumn.setCellFactory(cellFactory);
 
-		table.setItems(controller.data());
-
-		table.setRowFactory(tv -> new TableRow<Evento>() {
-
-			@Override
-			protected void updateItem(Evento item, boolean empty) {
-				super.updateItem(item, empty);
-
-				if (!empty) {
-					this.setOnMouseClicked((EventHandler<MouseEvent>) e -> {
-						if (e.getButton() == MouseButton.SECONDARY) {
-							Platform.runLater(() -> table.requestLayout());
-							// Evento evento =
-							// this.getTableView().getSelectionModel().getSelectedItem();
-
-							boolean value = item.getStatus();
-							item.setStatus(!value);
-
-							this.getTableView().getItems().set(getIndex(), item);
-						}
-
-					});
-
-					eventInfoTooltip = getEventInfoTooltip(item);
-					this.setTooltip(eventInfoTooltip);
-				}
-
-			}
-		});
-
 		controller.addListener(new ListChangeListener<Evento>() {
 
 			@Override
 			public void onChanged(javafx.collections.ListChangeListener.Change<? extends Evento> event) {
 				if (event.next()) {
-					if (event.wasUpdated()) {
-						System.out.println("Is this thing on?");
+					if (event.wasReplaced()) {
+
 					}
 				}
-
 			}
 
 		});
@@ -336,13 +334,12 @@ public class EventManager extends Application {
 				if (event.next()) {
 					updateEventInfoTooltip(controller.get(event.getFrom()));
 				}
-
-				System.out.println("Evento cambio: " + event.toString());
 			}
 
 		});
 
 		table.getColumns().addAll(columnas);
+
 		table.setId("event-table");
 	}
 
@@ -362,7 +359,15 @@ public class EventManager extends Application {
 		}
 
 		event.setEventInfo(eventInfo);
+
 		eventInfoTooltip.setEventInfo(eventInfo);
+		updateTable();
+	}
+
+	private void updateTable() {
+		TableColumn<?, ?> column = table.getColumns().get(0);
+		column.setVisible(false);
+		column.setVisible(true);
 	}
 
 	private boolean isSolved(Evento event) {
