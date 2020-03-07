@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.application.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml" alignment="center"
+	hgap="10" vgap="10" styleClass="root">
+
+	<Text text="Welcome" id="welcome-text" GridPane.columnIndex="0"
+		GridPane.rowIndex="0" GridPane.columnSpan="2" />
+
+	<TextField fx:id="username" promptText="Nombre de Usuario:"
+		GridPane.columnIndex="0" GridPane.rowIndex="1" />
+	<stylesheets>
+		<URL value="@../res/css/login_styles.css" />
+	</stylesheets>
+</GridPane>
