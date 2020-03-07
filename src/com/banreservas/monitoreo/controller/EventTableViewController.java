@@ -188,5 +188,4 @@ public class EventTableViewController implements ObservableList<Evento> {
 	public ObservableList<Evento> data() {
 		return eventRepository.data();
 	}
-
 }

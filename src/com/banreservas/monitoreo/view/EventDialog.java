@@ -126,15 +126,10 @@ public class EventDialog extends Dialog<Evento> {
 			@Override
 			public Evento call(ButtonType button) {
 				if (button == addBtnType) {
-					Evento newEvent = new Evento.EventBuilder()
-							.entryDate(datePicker.getValue())
-							.ticketNumber(tfEventTicket.getText())
-							.severity(cmbSeverity.getValue())
-							.description(taEventDescription.getText())
-							.shift(cmbTurnos.getValue())
-							.comentary(taEventComentary.getText())
-							.status(false)
-							.build();
+					Evento newEvent = new Evento.EventBuilder().entryDate(datePicker.getValue())
+							.ticketNumber(tfEventTicket.getText()).severity(cmbSeverity.getValue())
+							.description(taEventDescription.getText()).shift(cmbTurnos.getValue())
+							.comentary(taEventComentary.getText()).status(false).build();
 
 					newEvent.setEventInfo(new EventInfo.EventInfoBuilder().username(System.getProperty("user.name"))
 							.openDate(LocalDate.now()).editDate(LocalDate.now())

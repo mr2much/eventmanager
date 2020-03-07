@@ -77,6 +77,6 @@ public interface EventRepository {
 	boolean setAll(Evento... events);
 
 	boolean setAll(Collection<? extends Evento> events);
-	
+
 	ObservableList<Evento> data();
 }

@@ -43,7 +43,7 @@ public class EventRepositoryStub implements EventRepository {
 				.comentary("DTEL Zona Metro Este").status(true).severity(Severidad.BAJA).eventInfo(eventInfo).build();
 
 		idIndex++;
-		eventInfo = infoBuilder.id(idIndex).username("ALockward").openDate(LocalDate.of(2019,9,11)).closeDate(null)
+		eventInfo = infoBuilder.id(idIndex).username("ALockward").openDate(LocalDate.of(2019, 9, 11)).closeDate(null)
 				.editDate(LocalDate.of(2019, 9, 12)).editUsername("GBonilla").build();
 
 		Evento c = builder.id(idIndex).entryDate(LocalDate.of(2019, 9, 11)).ticketNumber("335361566")
@@ -53,8 +53,8 @@ public class EventRepositoryStub implements EventRepository {
 				.severity(Severidad.MEDIA).eventInfo(eventInfo).build();
 		idIndex++;
 
-		eventInfo = infoBuilder.id(idIndex).username("GBonilla").openDate(LocalDate.of(2019,9,26)).closeDate(LocalDate.now())
-				.editDate(LocalDate.now()).editUsername("WAlvarez").build();
+		eventInfo = infoBuilder.id(idIndex).username("GBonilla").openDate(LocalDate.of(2019, 9, 26))
+				.closeDate(LocalDate.now()).editDate(LocalDate.now()).editUsername("WAlvarez").build();
 
 		Evento d = builder.id(idIndex).entryDate(LocalDate.of(2019, 9, 26)).ticketNumber("335361766")
 				.description(
