@@ -7,15 +7,27 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
 
 <GridPane xmlns:fx="http://javafx.com/fxml" alignment="center"
 	hgap="10" vgap="10" styleClass="root">
 
-	<Text text="Welcome" id="welcome-text" GridPane.columnIndex="0"
-		GridPane.rowIndex="0" GridPane.columnSpan="2" />
+	<padding>
+		<Insets left="10" right="10" />
+	</padding>
+	<Text wrappingWidth="355" textAlignment="CENTER"
+		text="Bienvenidos al Sistemas de Manejo de Eventos del Centro de Monitoreo BanReservas"
+		id="welcome-text" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
 	<TextField fx:id="username" promptText="Nombre de Usuario:"
 		GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+	<HBox spacing="10" alignment="BOTTOM_RIGHT" GridPane.columnIndex="0"
+		GridPane.rowIndex="2">
+		<Button text="Accesar" />
+		<Button text="Cancel" />
+	</HBox>
 	<stylesheets>
 		<URL value="@../res/css/login_styles.css" />
 	</stylesheets>
