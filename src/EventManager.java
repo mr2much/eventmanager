@@ -1,14 +1,19 @@
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 import com.banreservas.monitoreo.controller.EventTableViewController;
+import com.banreservas.monitoreo.controller.LoginController;
 import com.banreservas.monitoreo.controller.UserViewController;
 import com.banreservas.monitoreo.model.EventInfo;
 import com.banreservas.monitoreo.model.Evento;
@@ -28,9 +33,9 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
@@ -39,6 +44,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -50,6 +56,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -98,37 +105,55 @@ public class EventManager extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		if (showLoginScreen(stage)) {
-			showEventManagerScreen(stage);
+		if (!showLoginScreen(stage).isEmpty()) {
+			// showEventManagerScreen(stage);
 		}
 	}
 
-	public boolean showLoginScreen(Stage stage) throws IOException {
-		try {
-			GridPane root = FXMLLoader.load(getClass().getResource("res/login_form_content.fxml"));
+	public String showLoginScreen(Stage stage) throws IOException {
+		FXMLLoader fxmlLoader;
 
+		try {
+			URL location = getClass().getResource("res/login_form_content.fxml");
+			fxmlLoader = new FXMLLoader(location);
+			GridPane root = fxmlLoader.load();
+
+			Stage stg = new Stage();
 			Scene loginScene = new Scene(root, 375, 200);
-			stage.setScene(loginScene);
-			stage.show();
+			stg.setScene(loginScene);
+			stg.initModality(Modality.WINDOW_MODAL);
+			stg.showAndWait();
 		} catch (IOException ex) {
 			throw new IOException("Error when opening login_form_content.fxml", ex);
 		}
 
-		return false;
+		LoginController ctrl = (LoginController) fxmlLoader.getController();
+		System.out.println(ctrl.getUsername());
+
+		return ctrl.getUsername();
 	}
 
 	public void showEventManagerScreen(Stage stage) throws IOException {
+
+		// fxmlLoader.setResources(ResourceBundle.getBundle("com.banreservas.monitoreo.controller",
+		// Locale.getDefault()));
+		// FXMLLoader fxmlLoader = new FXMLLoader(location, resources);
+
 		eventController.setRepository(eventRepository);
 		userController.setRepository(userRepository);
 
 		stage.setTitle("Eventos Cambio de Turno - Centro de Monitoreo");
 
-		GridPane grid = new GridPane();
+		GridPane grid = FXMLLoader.load(getClass().getResource("res/event_window.fxml"));
+		// LoginController loginController = (LoginController)
+		// fxmlLoader.getController();
 
-		grid.setAlignment(Pos.CENTER);
-		grid.setHgap(10);
-		grid.setVgap(10);
-		grid.setPadding(new Insets(25, 10, 25, 10));
+		// GridPane grid = new GridPane();
+
+		// grid.setAlignment(Pos.CENTER);
+		// grid.setHgap(10);
+		// grid.setVgap(10);
+		// grid.setPadding(new Insets(25, 10, 25, 10));
 
 		final VBox vbox = new VBox();
 		VBox.setVgrow(vbox, Priority.ALWAYS);

@@ -9,9 +9,15 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
 
-<GridPane xmlns:fx="http://javafx.com/fxml" alignment="center"
-	hgap="10" vgap="10" styleClass="root">
+<GridPane fx:controller="com.banreservas.monitoreo.controller.LoginController"
+	xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10"
+	styleClass="login_root">
+
+	<fx:define>
+		<fx:include fx:id="eventmanager" source="event_window.fxml" />
+	</fx:define>
 
 	<padding>
 		<Insets left="10" right="10" />
@@ -20,13 +26,21 @@
 		text="Bienvenidos al Sistemas de Manejo de Eventos del Centro de Monitoreo BanReservas"
 		id="welcome-text" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
-	<TextField fx:id="username" promptText="Nombre de Usuario:"
+	<TextField fx:id="usrTextField" promptText="Nombre de Usuario:"
 		GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
+	<PasswordField fx:id="passwordfield"
+		GridPane.columnIndex="0" GridPane.rowIndex="2" promptText="Password"
+		editable="false" disable="true" />
+
 	<HBox spacing="10" alignment="BOTTOM_RIGHT" GridPane.columnIndex="0"
-		GridPane.rowIndex="2">
-		<Button text="Accesar" />
-		<Button text="Cancel" />
+		GridPane.rowIndex="3">
+
+		<!--Button checks if the textfield's text property is empty and binds it's
+			disable property to the value -->
+		<Button fx:id="accessButton" text="Accesar" onAction="#handleAccesarButtonAction"
+			disable="${usrTextField.text.empty}" />
+		<Button fx:id="cancelButton" text="Cancel" onAction="#cancelButtonAction" />
 	</HBox>
 	<stylesheets>
 		<URL value="@../res/css/login_styles.css" />
